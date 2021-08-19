@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.0.0",
+    "discord-akairo": "github:SkyBlockDev/discord-akairo"
+  }
 }
