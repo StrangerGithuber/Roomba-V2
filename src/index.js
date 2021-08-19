@@ -4,8 +4,4 @@ let client = new RoombaClient({
     prefix: '!'
 });
 
-client.login("ODc3OTM4OTAxMDU3MTQ2OTEw.YR56UQ.UIM4UqlIfxsG4y9yq0XqtvdnQ-U")
-    .then(() => {
-        console.log("Roomba V2 connected")
-    }
-)
+client.login("ODc3OTM4OTAxMDU3MTQ2OTEw.YR56UQ.7arhARk2E1u2-p5ij5n-Lx0Z-gQ");

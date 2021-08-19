@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "discord-akairo": "github:SkyBlockDev/discord-akairo",
     "discord.js": "^13.0.0",
-    "discord-akairo": "github:SkyBlockDev/discord-akairo"
+    "nodemon": "^2.0.12"
   }
 }
