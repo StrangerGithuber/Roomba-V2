@@ -8,7 +8,11 @@ class EmbedCommand extends Command {
     }
 
     exec(message) {
-
+        return message.channel.send({ embeds: [
+            this.client.functions.embed()
+                .setDescription("Hello")
+                .setColor(this.client.colors.color.darkpurple)
+            ]});
     }
 }
 module.exports = EmbedCommand;

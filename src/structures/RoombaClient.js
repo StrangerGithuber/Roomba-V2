@@ -1,4 +1,6 @@
 const { AkairoClient, CommandHandler, ListenerHandler } = require("discord-akairo");
+const { embed } = require("../util/functions");
+const { color } = require("../util/colors");
 
 module.exports = class RoombaClient extends AkairoClient {
     constructor(config = {}) {
@@ -34,8 +36,18 @@ module.exports = class RoombaClient extends AkairoClient {
 
     this.listenerHandler = new ListenerHandler(this, {
         directory: './src/listeners/'
-    })
+    });
 
+    // this.client.functions.embed()
+    this.functions = {
+        embed: embed
+    }
+
+    //Theme
+    // TODO need to add theme to the bot that can be changed via config file
+    this.colors = {
+        color: color
+    }
     this.commandHandler.loadAll();
     this.commandHandler.useListenerHandler(this.listenerHandler);
     this.listenerHandler.loadAll();
