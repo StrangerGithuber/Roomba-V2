@@ -5,14 +5,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devmod": "pm2 start src/index.js --watch",
+    "stop": "pm2 stop all",
+    "devmonit": "pm2 monit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "common-tags": "^1.8.0",
     "discord-akairo": "github:SkyBlockDev/discord-akairo",
     "discord.js": "^13.0.0",
-    "nodemon": "^2.0.12"
+    "moment": "^2.29.1",
+    "nodemon": "^2.0.12",
+    "pm2": "^5.1.1"
   }
 }
