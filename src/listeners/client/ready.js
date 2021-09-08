@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const ts = new Date();
 
 class ReadyListener extends Listener {
     constructor() {
@@ -9,7 +10,8 @@ class ReadyListener extends Listener {
     }
 
     exec() {
-        console.log('I\'m ready!');
+        console.log(` ${ts.toLocaleString()} - Roomba V2 Started`);
+        console.log("════════════════════════════════════════════");
     }
 }
 

@@ -18,6 +18,7 @@
     "discord-akairo": "github:SkyBlockDev/discord-akairo",
     "discord.js": "^13.0.0",
     "moment": "^2.29.1",
+    "mongoose": "^6.0.5",
     "nodemon": "^2.0.12",
     "pm2": "^5.1.1"
   }
