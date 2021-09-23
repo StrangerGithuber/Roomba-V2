@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { AkairoClient, CommandHandler, ListenerHandler } = require("discord-akairo");
 const { embed } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
+const { GuildsProvider } = require("./Providers");
 const { color } = require("../util/colors");
 const ts = new Date();
 
@@ -31,7 +32,11 @@ module.exports = class RoombaClient extends AkairoClient {
     this.commandHandler = new CommandHandler(this, {
         blockClient: true,
         blockBots: true,
-        prefix: config.prefix,
+        prefix: async message => {
+            const guildPrefix = await this.guildSettings.get(message.guild);
+            if (guildPrefix) return guildPrefix.prefix;
+            return config.prefix;
+        },
         allowMention: true,
         defaultCooldown: 3000,
         directory: "./src/commands/"
@@ -42,9 +47,8 @@ module.exports = class RoombaClient extends AkairoClient {
     });
 
     // this.client.functions.embed()
-    this.functions = {
-        embed: embed
-    }
+    this.functions = {embed: embed}
+    this.guildSettings = new GuildsProvider();
 
     //Theme
     // TODO need to add theme to the bot that can be changed via config file
@@ -56,6 +60,7 @@ module.exports = class RoombaClient extends AkairoClient {
     init() {
         this.commandHandler.loadAll();
         this.commandHandler.useListenerHandler(this.listenerHandler);
+        console.clear();
         console.log("════════════════════════════════════════════");
         console.log(`═══════════ ${this.commandHandler.modules.size} Loaded Commands ══════════════`);
         console.log("════════════════════════════════════════════");
