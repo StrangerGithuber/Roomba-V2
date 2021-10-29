@@ -27,30 +27,30 @@ class BanCommand extends Command {
         if (!day) day = 7;
         if (day > 7) return message.channel.send("La limite de temps de bannissement est 7 jours!");
         const guildDB = await this.client.guildSettings.get(message.guild);
-        try{
-            member ? await member.ban({days: day, reason: reason}) : message.channel.send("Aucun utilisateur spécifié !");
-            if (guildDB.logChannel !== null){
-                const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.logChannel);
-                if (logChannel !== null){
-                    const embed = await this.client.functions.embed()
-                        .setTitle(`Ban ${member.user.tag}`)
-                        .setThumbnail(member.user.displayAvatarURL())
-                        .setColor(this.client.colors.color.darkpurple)
-                        .addField(`Plus d'informations à propos de **${member.user.username}**`,
-                            `● ID : \`${member.user.id}\`
-                        ● Bot : \`${member.user.bot ? 'Oui' : 'Non'}\`
-                        ● Créé le : \`${moment(member.user.createdAt).format('DD/MM/YYYY à hh.mm').replace(".","h")}\`
-                        ● Temps : \`${day} ${day > 1 ? "jours" : "jour"}\`       
-                        ● Raison ban : \`${reason}\`       
-                        `
-                        )
-                    logChannel.send({ embeds: [embed]})
-                }
-            }
+        if (member && member.id === message.guild.ownerId) {
             await message.delete();
-        }catch (e){
-            message.channel.send(e.message);
+            return message.channel.send("You can't ban the server owner!")
         }
+        member ? await member.ban({days: day, reason: reason}) : message.channel.send("Aucun utilisateur spécifié !");
+        if (guildDB.logChannel !== null){
+            const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.logChannel);
+            if (logChannel !== null){
+                const embed = await this.client.functions.embed()
+                    .setTitle(`Ban ${member.user.tag}`)
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .setColor(this.client.colors.color.darkpurple)
+                    .addField(`Plus d'informations à propos de **${member.user.username}**`,
+                        `● ID : \`${member.user.id}\`
+                    ● Bot : \`${member.user.bot ? 'Oui' : 'Non'}\`
+                    ● Créé le : \`${moment(member.user.createdAt).format('DD/MM/YYYY à hh.mm').replace(".","h")}\`
+                    ● Temps : \`${day} ${day > 1 ? "jours" : "jour"}\`       
+                    ● Raison ban : \`${reason}\`       
+                    `
+                    )
+                logChannel.send({ embeds: [embed]})
+            }
+        }
+        await message.delete();
     }
 }
 module.exports = BanCommand;

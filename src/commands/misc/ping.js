@@ -4,6 +4,7 @@ class PingCommand extends Command {
     constructor() {
         super('ping', {
             aliases: ['ping'],
+            cooldown: 20000,
             description: {
                 content: 'La commande ping renvoie la latence du bot!',
                 usage: 'ping',

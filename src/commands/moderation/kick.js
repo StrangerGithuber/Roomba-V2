@@ -24,33 +24,30 @@ class KickCommand extends Command {
     async exec(message, { member, reason }) {
         if (!reason) reason = "Reason not specified!";
         const guildDB = await this.client.guildSettings.get(message.guild);
-        try{
-            member ? await member.kick(reason) : message.channel.send("Aucun utilisateur spécifié !");
-            if (guildDB.logChannel !== null){
-                const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.logChannel);
-                if (logChannel !== null){
-                    const embed = await this.client.functions.embed()
-                        .setTitle(`Kick ${member.user.tag}`)
-                        .setThumbnail(member.user.displayAvatarURL())
-                        .setColor(this.client.colors.color.darkpurple)
-                        .addField(`Plus d'informations à propos de **${member.user.username}**`,
-                            `● ID : \`${member.user.id}\`
-                        ● Bot : \`${member.user.bot ? 'Oui' : 'Non'}\`
-                        ● Créé le : \`${moment(member.user.createdAt).format('DD/MM/YYYY à hh.mm').replace(".","h")}\`
-                        ● Raison kick : \`${reason}\`       
-                        `
-                        )
-                    logChannel.send({ embeds: [embed]})
-                }
-            }
+        await message.delete();
+        if (member && member.id === message.guild.ownerId) {
             await message.delete();
-        }catch (e){
-            message.channel.send(e.message);
+            return message.channel.send("You can't kick the server owner!")
         }
-
-
-
-
+        member ? await member.kick(reason) : message.channel.send("Aucun utilisateur spécifié !");
+        if (guildDB.logChannel !== null){
+            const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.logChannel);
+            if (logChannel !== null){
+                const embed = await this.client.functions.embed()
+                    .setTitle(`Kick ${member.user.tag}`)
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .setColor(this.client.colors.color.darkpurple)
+                    .addField(`Plus d'informations à propos de **${member.user.username}**`,
+                        `● ID : \`${member.user.id}\`
+                    ● Bot : \`${member.user.bot ? 'Oui' : 'Non'}\`
+                    ● Créé le : \`${moment(member.user.createdAt).format('DD/MM/YYYY à hh.mm').replace(".","h")}\`
+                    ● Raison kick : \`${reason}\`       
+                    `
+                    )
+                logChannel.send({ embeds: [embed]})
+            }
+        }
+        await message.delete();
     }
 }
 module.exports = KickCommand;

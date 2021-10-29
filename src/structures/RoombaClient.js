@@ -66,6 +66,7 @@ module.exports = class RoombaClient extends AkairoClient {
     init() {
         this.commandHandler.loadAll();
         this.commandHandler.useListenerHandler(this.listenerHandler);
+        this.listenerHandler.setEmitters({ commandHandler: this.commandHandler });
         console.clear();
         console.log("════════════════════════════════════════════");
         console.log(`═══════════ ${this.commandHandler.modules.size} Loaded Commands ══════════════`);
