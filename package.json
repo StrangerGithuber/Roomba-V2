@@ -2,11 +2,11 @@
   "name": "client",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "devmod": "pm2 start src/index.js --watch",
+    "devmod": "pm2 start . --watch",
     "stop": "pm2 stop all",
     "devmonit": "pm2 monit"
   },
@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^2.8.0",
     "common-tags": "^1.8.0",
     "discord-akairo": "github:SkyBlockDev/discord-akairo",
     "discord.js": "^13.0.0",

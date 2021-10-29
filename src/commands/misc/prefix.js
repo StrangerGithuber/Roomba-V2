@@ -1,5 +1,4 @@
 const { Command } = require('discord-akairo');
-const moment = require("moment");
 
 class PrefixCommand extends Command {
     constructor() {
@@ -18,10 +17,11 @@ class PrefixCommand extends Command {
         });
     }
 
-    async exec(message, args) {
-        if (!args.newPrefix) return message.channel.send(`Prefix actuel -> \`${await this.handler.prefix(message)}\``);
-        await this.client.guildSettings.update(message.guild, {prefix: args.newPrefix});
-        return message.channel.send(`Le prefix du serveur est maintenant -> \`${args.newPrefix}\``);
+    async exec(message, { newPrefix }) {
+        if (!newPrefix) return message.channel.send(`Prefix actuel -> \`${await this.handler.prefix(message)}\``);
+        await this.client.guildSettings.update(message.guild, {prefix: newPrefix});
+        await message.delete();
+        return message.channel.send(`Le prefix du serveur est maintenant -> \`${newPrefix}\``);
     }
 }
 module.exports = PrefixCommand;

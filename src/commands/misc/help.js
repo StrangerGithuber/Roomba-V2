@@ -14,9 +14,8 @@ class HelpCommand extends Command {
         });
     }
 
-    async exec(message, args) {
+    async exec(message, { command }) {
         const prefix = await this.handler.prefix(message);
-        const command = args.command;
 
         if (!command) {
             let embed = this.client.functions.embed()
@@ -26,11 +25,11 @@ class HelpCommand extends Command {
                 )
                 .setColor(this.client.colors.color.darkpurple)
                 .setDescription(`Retrouvez la liste de toutes nos commandes ci-dessous!
-                 Si vous avez besoin d'assistance rejoigner [notre serveur](https://placeholder.com)
+                 Si vous avez besoin d'assistance rejoignez [notre serveur](https://placeholder.com)
                  **――――――――――――**`)
 
             for (const category of this.handler.categories.values()) {
-                embed.addField(
+                await embed.addField(
                     `⚈ ${category.id}`,
                     `${category
                         .filter(cmd => cmd.aliases.length > 0)
@@ -38,7 +37,7 @@ class HelpCommand extends Command {
                         .join(', ')}`
                 )
             }
-            embed.addField('**――――――――――――**', `**\`${prefix}help <commande>\` pour des infos sur une commande spécifique.**
+            await embed.addField('**――――――――――――**', `**\`${prefix}help <commande>\` pour des infos sur une commande spécifique.**
                 Exemples: \`${prefix}help ping\` | \`${prefix}help userinfo\``)
             return message.channel.send({embeds: [embed]})
         }
@@ -56,7 +55,7 @@ class HelpCommand extends Command {
                 **―――――――――――――――――――――**
             `)
 
-
+        await message.delete();
         return message.channel.send({embeds: [embed]})
         // return message.channel.send(stripIndents`
         // \`\`\`makefile

@@ -5,7 +5,7 @@ class UserinfoCommand extends Command {
     constructor() {
         super('userinfo', {
             aliases: ['userinfo', "info"],
-            category: 'Misc',
+            category: 'Infos',
             description: {
                 content: 'La commande userinfo renvoie des informations sur l\'utilisateur!!',
                 usage: "userinfo <member>",
@@ -25,17 +25,17 @@ class UserinfoCommand extends Command {
         });
     }
 
-    exec(message, args) {
-        console.log(args.member)
+    async exec(message, args) {
+        await message.delete();
         return message.channel.send({ embeds: [
-            this.client.functions.embed()
+            await this.client.functions.embed()
                 .setTitle(`${args.member.displayName} (${args.member.id})`)
                 .setThumbnail(args.member.user.displayAvatarURL())
                 .setColor(this.client.colors.color.darkpurple)
                 .addField(`Plus d'informations à propos de **${args.member.user.username}**`,
                     `● Nom : \`${args.member.user.tag}\`
                         ● Bot : \`${args.member.user.bot ? 'Oui' : 'Non'}\`
-                        ● Crée le : \`${moment(args.member.user.createdAt).format('DD/MM/YYYY | hh.mm')}\`
+                        ● Créé le : \`${moment(args.member.user.createdAt).format('DD/MM/YYYY à hh.mm').replace(".", "h")}\`
                         ● Statut : \`${args.member.presence ? args.member.presence.status.toUpperCase() : "Inconnu"}\`
                         ● Image Profil : **[Lien](${args.member.user.displayAvatarURL({format: 'png', dynamic: 'true'})})**
             

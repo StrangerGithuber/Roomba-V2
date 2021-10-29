@@ -2,11 +2,11 @@ const { Listener } = require('discord-akairo');
 const { Guild } = require("../../structures/Models");
 
 
-class GuildCreateAddListener extends Listener {
+class GuildCreateListener extends Listener {
     constructor() {
-        super('guildCreateAdd', {
+        super('guildCreate', {
             emitter: 'client',
-            event: 'guildCreateAdd'
+            event: 'guildCreate'
         });
     }
 
@@ -20,4 +20,4 @@ class GuildCreateAddListener extends Listener {
     }
 }
 
-module.exports = GuildCreateAddListener;
+module.exports = GuildCreateListener;

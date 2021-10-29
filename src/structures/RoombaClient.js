@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { AkairoClient, CommandHandler, ListenerHandler } = require("discord-akairo");
-const { embed } = require("../util/functions");
+const { embed, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider } = require("./Providers");
 const { color } = require("../util/colors");
@@ -47,7 +47,13 @@ module.exports = class RoombaClient extends AkairoClient {
     });
 
     // this.client.functions.embed()
-    this.functions = {embed: embed}
+    this.functions = {
+        embed: embed,
+        getBotInformations: getBotInformations,
+        displayBotInfos: displayBotInfos,
+        createNewMemberCard: createNewMemberCard,
+        createRemovedMemberCard: createRemovedMemberCard
+    }
     this.guildSettings = new GuildsProvider();
 
     //Theme

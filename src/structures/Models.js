@@ -6,6 +6,16 @@ const guildSchema = new mongoose.Schema({
         type: String,
         required: false,
         default : '!'
+    },
+    welcomeChannel: {
+        type: String,
+        required: false,
+        default: null
+    },
+    logChannel: {
+        type: String,
+        required: false,
+        default: null
     }
 })
 

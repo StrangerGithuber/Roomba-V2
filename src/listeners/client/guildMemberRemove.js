@@ -1,10 +1,10 @@
 const { Listener } = require('discord-akairo');
 
-class GuildMemberAddListener extends Listener {
+class GuildMemberRemoveListener extends Listener {
     constructor() {
-        super('guildMemberAdd', {
+        super('guildMemberRemove', {
             emitter: 'client',
-            event: 'guildMemberAdd'
+            event: 'guildMemberRemove'
         });
     }
 
@@ -32,10 +32,10 @@ class GuildMemberAddListener extends Listener {
             }
         welcomeChannel.send({
             content: null,
-            files: [await this.client.functions.createNewMemberCard(member)]
+            files: [await this.client.functions.createRemovedMemberCard(member)]
         });
         }
     }
 }
 
-module.exports = GuildMemberAddListener;
+module.exports = GuildMemberRemoveListener;

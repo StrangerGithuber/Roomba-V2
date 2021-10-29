@@ -13,8 +13,24 @@ class PingCommand extends Command {
         });
     }
 
-    exec(message) {
-        return message.reply('Pong!');
+    async exec(message) {
+        const sentMessage = await message.channel.send("Pong");
+        const timestamp = message.editedTimestamp ? message.editedTimestamp : message.createdTimestamp;
+        const botLantency = `${'```'}\n ${Math.round(sentMessage.createdTimestamp - timestamp)}ms   ${'```'}`;
+        const apiLantency = `${'```'}\n ${Math.round(message.client.ws.ping)}ms   ${'```'}`;
+
+        const embed = this.client.functions.embed()
+            .setTitle('Pong!  🏓')
+            .setColor(this.client.colors.color.darkpurple)
+            .addField('Latence du bot', botLantency, true)
+            .addField('Latence de l\'API', apiLantency, true)
+            .setFooter(message.author.tag, message.author.displayAvatarURL())
+            .setTimestamp();
+        await message.delete();
+        await sentMessage.edit({
+            content: null,
+            embeds: [embed]
+        })
     }
 }
 module.exports = PingCommand;

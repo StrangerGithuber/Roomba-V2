@@ -13,9 +13,10 @@ class EmbedCommand extends Command {
         });
     }
 
-    exec(message) {
+    async exec(message) {
+        await message.delete();
         return message.channel.send({ embeds: [
-            this.client.functions.embed()
+            await this.client.functions.embed()
                 .setDescription("Hello")
                 .setColor(this.client.colors.color.darkpurple)
             ]});
