@@ -7,6 +7,16 @@ const guildSchema = new mongoose.Schema({
         required: false,
         default : '!'
     },
+    blackListedUsers: {
+        type: Array,
+        required: false,
+        default: []
+    },
+    blackListedChannels: {
+        type: Array,
+        required: false,
+        default: []
+    },
     welcomeChannel: {
         type: String,
         required: false,

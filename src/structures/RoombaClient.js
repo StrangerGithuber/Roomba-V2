@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const { AkairoClient, CommandHandler, ListenerHandler } = require("discord-akairo");
-const { embed, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard } = require("../util/functions");
+const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
+const { embed, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logLoadedHandlers } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider } = require("./Providers");
 const { color } = require("../util/colors");
@@ -9,7 +9,9 @@ const ts = new Date();
 module.exports = class RoombaClient extends AkairoClient {
     constructor(config = {}) {
         super(
-            {ownerID: "259741670323650571"},
+            {
+                ownerID: "259741670323650571"
+            },
             {
                 allowedMentions: {
                     parse: ['roles', 'everyone', 'users'],
@@ -52,7 +54,8 @@ module.exports = class RoombaClient extends AkairoClient {
         getBotInformations: getBotInformations,
         displayBotInfos: displayBotInfos,
         createNewMemberCard: createNewMemberCard,
-        createRemovedMemberCard: createRemovedMemberCard
+        createRemovedMemberCard: createRemovedMemberCard,
+        logLoadedHandlers: logLoadedHandlers
     }
     this.guildSettings = new GuildsProvider();
 
@@ -64,29 +67,19 @@ module.exports = class RoombaClient extends AkairoClient {
     }
 
     init() {
-        this.commandHandler.loadAll();
+        this.inhibitorHandler = new InhibitorHandler(this, {
+            directory: 'src/inhibitors/'
+        });
         this.commandHandler.useListenerHandler(this.listenerHandler);
+        this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
         this.listenerHandler.setEmitters({ commandHandler: this.commandHandler });
-        console.clear();
-        console.log("════════════════════════════════════════════");
-        console.log(`═══════════ ${this.commandHandler.modules.size} Loaded Commands ══════════════`);
-        console.log("════════════════════════════════════════════");
-        this.commandHandler.categories.forEach((val) => {
-            console.log(`▶ ${val} Category :`);
-            val.forEach(r => {
-                console.log(`\t⬤ ${r.id}`)
-            })
-        })
+
+        this.commandHandler.loadAll();
         this.listenerHandler.loadAll();
-        console.log("════════════════════════════════════════════");
-        console.log(`═══════════ ${this.listenerHandler.modules.size} Loaded Listeners ═════════════`);
-        console.log("════════════════════════════════════════════");
-        this.listenerHandler.categories.forEach(val => {
-            val.forEach(r => {
-                console.log("▶ " + r.id);
-            })
-        })
-        console.log("════════════════════════════════════════════");
+        this.inhibitorHandler.loadAll();
+
+        this.functions.logLoadedHandlers(this.commandHandler, this.listenerHandler, this.inhibitorHandler);
+
     }
 
     async start() {

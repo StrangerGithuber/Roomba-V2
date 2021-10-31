@@ -33,14 +33,14 @@ class UserinfoCommand extends Command {
                 .setThumbnail(args.member.user.displayAvatarURL())
                 .setColor(this.client.colors.color.darkpurple)
                 .addField(`Plus d'informations à propos de **${args.member.user.username}**`,
-                    `● Nom : \`${args.member.user.tag}\`
-                        ● Bot : \`${args.member.user.bot ? 'Oui' : 'Non'}\`
-                        ● Créé le : \`${moment(args.member.user.createdAt).format('DD/MM/YYYY à hh.mm').replace(".", "h")}\`
-                        ● Statut : \`${args.member.presence ? args.member.presence.status.toUpperCase() : "Inconnu"}\`
-                        ● Image Profil : **[Lien](${args.member.user.displayAvatarURL({format: 'png', dynamic: 'true'})})**
-            
-                        L'utilisateur **${args.member.user.username}** ${args.member.nickname ? `aka **${args.member.nickname}**` : ''} a rejoint le \`${moment(message.member.joinedAt).format('DD/MM/YYYY | hh.mm')}\` et possède les rôles suivants : ${args.member.roles.cache.map(roles => `\`${roles.name}\``).toString().replace(',`@everyone`', '')}.
-                        `
+`● Nom : \`${args.member.user.tag}\`
+● Bot : \`${args.member.user.bot ? 'Oui' : 'Non'}\`
+● Créé le : \`${moment(args.member.user.createdAt).format('DD/MM/YYYY à hh.mm').replace(".", "h")}\`
+● Statut : \`${args.member.presence ? args.member.presence.status.toUpperCase() : "Inconnu"}\`
+● Image Profil : **[Lien](${args.member.user.displayAvatarURL({format: 'png', dynamic: 'true'})})**
+
+L'utilisateur **${args.member.user.username}** ${args.member.nickname ? `aka **${args.member.nickname}**` : ''} a rejoint le \`${moment(message.member.joinedAt).format('DD/MM/YYYY | hh.mm')}\` et possède les rôles suivants : ${args.member.roles.cache.map(roles => `\`${roles.name}\``).toString().replace(',`@everyone`', '')}.
+`
                 )
             ] })
     }

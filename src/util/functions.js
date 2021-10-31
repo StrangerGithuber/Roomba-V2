@@ -31,4 +31,36 @@ module.exports = {
     createRemovedMemberCard : async function (member) {
         return await createRemovedMemberCard(member);
     },
+    logLoadedHandlers : function (commandHandler, listenerHandler, inhibitorHandler){
+        console.clear();
+        console.log("════════════════════════════════════════════");
+        console.log(`═══════════ ${commandHandler.modules.size} Loaded Commands ══════════════`);
+        console.log("════════════════════════════════════════════");
+        commandHandler.categories.forEach((val) => {
+            console.log(`▶ ${val} Category :`);
+            val.forEach(r => {
+                console.log(`\t⬤ ${r.id}`)
+            })
+        })
+
+        console.log("════════════════════════════════════════════");
+        console.log(`═══════════ ${listenerHandler.modules.size} Loaded Listeners ═════════════`);
+        console.log("════════════════════════════════════════════");
+        listenerHandler.categories.forEach(val => {
+            val.forEach(r => {
+                console.log("▶ " + r.id);
+            })
+        })
+        console.log("════════════════════════════════════════════");
+
+        console.log("════════════════════════════════════════════");
+        console.log(`══════════ ${inhibitorHandler.modules.size} Loaded Inhibitors ═════════════`);
+        console.log("════════════════════════════════════════════");
+        inhibitorHandler.categories.forEach(val => {
+            val.forEach(r => {
+                console.log("▶ " + r.id);
+            })
+        })
+        console.log("════════════════════════════════════════════");
+    }
 }
