@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Player } = require("discord-music-player");
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
 const { embed, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logLoadedHandlers } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
@@ -31,6 +32,8 @@ module.exports = class RoombaClient extends AkairoClient {
                 intents: 32767
             }
         );
+
+
     this.commandHandler = new CommandHandler(this, {
         blockClient: true,
         blockBots: true,
@@ -46,6 +49,12 @@ module.exports = class RoombaClient extends AkairoClient {
 
     this.listenerHandler = new ListenerHandler(this, {
         directory: './src/listeners/'
+    });
+
+    // Discord Music Player client
+
+    this.musicPlayer = new Player(this.util.client, {
+        leaveOnEmpty: false,
     });
 
     // this.client.functions.embed()
@@ -79,7 +88,6 @@ module.exports = class RoombaClient extends AkairoClient {
         this.inhibitorHandler.loadAll();
 
         this.functions.logLoadedHandlers(this.commandHandler, this.listenerHandler, this.inhibitorHandler);
-
     }
 
     async start() {
