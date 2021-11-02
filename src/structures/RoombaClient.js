@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const {MusicPlayer} = require("./MusicPlayer");
+const {initDiscordMusicPlayerEvents} = require("../util/musicPlayerEvents");
 const {DMPErrors} = require("discord-music-player");
 const { Player } = require("discord-music-player");
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
@@ -52,82 +54,9 @@ module.exports = class RoombaClient extends AkairoClient {
         directory: './src/listeners/'
     });
 
-    // Discord Music Player client
 
-    this.musicPlayer = new Player(this.util.client, {
-        leaveOnEmpty: true,
-        deafenOnJoin: true,
-    });
 
-    // Events for Discord Music Player Client
-    this.musicPlayer.on('channelEmpty', async (queue) => {
-        const guildDB = await this.guildSettings.get(queue.guild);
-        await this.functions.logToMusicChannel(queue, guildDB, "Tout le monde à quitté le channel, déconnexion...", this.guildSettings, this);
-    })
-    this.musicPlayer.on('songAdd', async (queue, song) => {
-        const guildDB = await this.guildSettings.get(queue.guild);
-        if (guildDB && guildDB.musicChannel){
-            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
-            if (musicChannel){
-                musicChannel.send(`Musique ajoutée à la liste d'attente :`);
-            }
-        }
-    })
-    this.musicPlayer.on('playlistAdd', async (queue, playlist) => {
-        const guildDB = await this.guildSettings.get(queue.guild);
-        if (guildDB && guildDB.musicChannel){
-            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
-            if (musicChannel){
-                musicChannel.send(`Playlist ajoutée à la liste d'attente!`);
-            }
-        }
-    })
-    this.musicPlayer.on('queueEnd', async (queue) => {
-        const guildDB = await this.guildSettings.get(queue.guild);
-        if (guildDB && guildDB.musicChannel){
-            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
-            if (musicChannel){
-                musicChannel.send(`Fin de la file d'attente !`);
-            }
-        }
-    })
-    this.musicPlayer.on('songChanged', async (queue, song) => {
-        const guildDB = await this.guildSettings.get(queue.guild);
-        if (guildDB && guildDB.musicChannel){
-            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
-            if (musicChannel){
-                musicChannel.send(`Lecture de la musique : ${song.name}`);
-            }
-        }
-    })
-    this.musicPlayer.on('clientDisconnect', async (queue) => {
-        const guildDB = await this.guildSettings.get(queue.guild);
-        if (guildDB && guildDB.musicChannel){
-            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
-            if (musicChannel){
-                musicChannel.send(`Déconnexion forcée par commande modérateur !`);
-            }
-        }
-    })
-    this.musicPlayer.on('clientUndeafen', async (queue) => {
-        const guildDB = await this.guildSettings.get(queue.guild);
-        if (guildDB && guildDB.musicChannel){
-            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
-            if (musicChannel){
-                musicChannel.send(`Un modérateur m'a rendu l'audition !`);
-            }
-        }
-    })
-    this.musicPlayer.on('error', async (error, queue) => {
-            const guildDB = await this.guildSettings.get(queue.guild);
-            if (guildDB && guildDB.musicChannel){
-                const musicChannel = await fetchChannel(this, guildDB.musicChannel);
-                if (musicChannel){
-                    musicChannel.send(`Une erreur est survenu : ${error}`);
-                }
-            }
-        })
-      // TODO ADD LES FONCTIONS POUR LES PLAYLISTS
+
 
     // this.client.functions.embed()
     this.functions = {
@@ -147,6 +76,14 @@ module.exports = class RoombaClient extends AkairoClient {
         playlistEmbed: playlistEmbed
     }
     this.guildSettings = new GuildsProvider();
+
+    // Discord Music Player client
+    this.musicPlayer = new MusicPlayer(this.util.client, this.guildSettings, this);
+    // this.musicPlayer = new Player(this.util.client, {
+        //     leaveOnEmpty: true,
+        //     deafenOnJoin: true,
+        // });
+
 
     //Theme
     // TODO need to add theme to the bot that can be changed via config file

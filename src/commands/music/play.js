@@ -23,13 +23,13 @@ class PlayCommand extends Command {
         if (channel.allowed){
             let guildQueue = this.client.musicPlayer.getQueue(message.guild.id);
             let queue;
-            if (guildQueue){
-                queue = guildQueue;
-            }else{
-                queue = this.client.musicPlayer.createQueue(message.guild.id);
-                await queue.setData({voiceChannelID: message.member.voice.channel.id});
-            }
             if (await this.client.functions.checkUserInVoiceChannel(message)){
+                if (guildQueue){
+                    queue = guildQueue;
+                }else{
+                    queue = this.client.musicPlayer.createQueue(message.guild.id);
+                    await queue.setData({voiceChannelID: message.member.voice.channel.id});
+                }
                 if (await this.client.functions.checkUserInSameVoiceChannelAsBot(message, queue)){
                     let musicEmbed;
                     await queue.join(message.member.voice.channel);
