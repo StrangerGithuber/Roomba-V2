@@ -1,14 +1,14 @@
 const { Command } = require('discord-akairo');
 
-class SkipCommand extends Command {
+class ShuffleCommand extends Command {
     constructor() {
-        super('skip', {
-            aliases: ['skip'],
+        super('shuffle', {
+            aliases: ['shuffle'],
             category: 'Music',
             description: {
-                content: 'La commande skip permet de lancer la prochaine musique de la file d\'attente',
-                usage: "skip",
-                exemples: ['skip'],
+                content: 'La commande shuffle permet de mélanger les musiques de la liste d\'attente !',
+                usage: "shuffle",
+                exemples: ['shuffle'],
             },
             channel: "guild",
         });
@@ -20,12 +20,12 @@ class SkipCommand extends Command {
         const channel = await this.client.functions.checkMusicChannelExistence(message, message.guild, this.client.guildSettings, this.client);
         if (channel.allowed) {
             if (guildQueue) {
-                message.channel.send("Passage à la musique suivante!");
-                guildQueue.skip();
+                message.channel.send("La liste d'attente vient d'être mélangée ! ");
+                guildQueue.shuffle();
             } else {
-                message.channel.send("Aucune musique n'est actuellement entrain d'être jouée!");
+                message.channel.send("Aucune musique n'est actuellement entrain d'être jouée!")
             }
         }
     }
 }
-module.exports = SkipCommand;
+module.exports = ShuffleCommand;

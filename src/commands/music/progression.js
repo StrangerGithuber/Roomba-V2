@@ -1,14 +1,15 @@
+const {ProgressBar} = require("discord-music-player");
 const { Command } = require('discord-akairo');
 
-class SkipCommand extends Command {
+class ProgressionCommand extends Command {
     constructor() {
-        super('skip', {
-            aliases: ['skip'],
+        super('progression', {
+            aliases: ['progression'],
             category: 'Music',
             description: {
-                content: 'La commande skip permet de lancer la prochaine musique de la file d\'attente',
-                usage: "skip",
-                exemples: ['skip'],
+                content: 'La commande progression permet de voir la progression de la musique',
+                usage: "progression",
+                exemples: ['progression'],
             },
             channel: "guild",
         });
@@ -20,12 +21,12 @@ class SkipCommand extends Command {
         const channel = await this.client.functions.checkMusicChannelExistence(message, message.guild, this.client.guildSettings, this.client);
         if (channel.allowed) {
             if (guildQueue) {
-                message.channel.send("Passage à la musique suivante!");
-                guildQueue.skip();
+                const ProgressBar = guildQueue.createProgressBar({size: 50});
+                message.channel.send(`**Progression de la musique: ** \n${ProgressBar.prettier}`);
             } else {
                 message.channel.send("Aucune musique n'est actuellement entrain d'être jouée!");
             }
         }
     }
 }
-module.exports = SkipCommand;
+module.exports = ProgressionCommand;

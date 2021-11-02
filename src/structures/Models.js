@@ -26,6 +26,11 @@ const guildSchema = new mongoose.Schema({
         type: String,
         required: false,
         default: null
+    },
+    musicChannel: {
+        type: String,
+        required: false,
+        default: null
     }
 })
 

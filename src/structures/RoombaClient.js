@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const {DMPErrors} = require("discord-music-player");
 const { Player } = require("discord-music-player");
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
-const { embed, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logLoadedHandlers } = require("../util/functions");
+const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider } = require("./Providers");
 const { color } = require("../util/colors");
@@ -54,17 +55,95 @@ module.exports = class RoombaClient extends AkairoClient {
     // Discord Music Player client
 
     this.musicPlayer = new Player(this.util.client, {
-        leaveOnEmpty: false,
+        leaveOnEmpty: true,
+        deafenOnJoin: true,
     });
+
+    // Events for Discord Music Player Client
+    this.musicPlayer.on('channelEmpty', async (queue) => {
+        const guildDB = await this.guildSettings.get(queue.guild);
+        await this.functions.logToMusicChannel(queue, guildDB, "Tout le monde à quitté le channel, déconnexion...", this.guildSettings, this);
+    })
+    this.musicPlayer.on('songAdd', async (queue, song) => {
+        const guildDB = await this.guildSettings.get(queue.guild);
+        if (guildDB && guildDB.musicChannel){
+            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
+            if (musicChannel){
+                musicChannel.send(`Musique ajoutée à la liste d'attente :`);
+            }
+        }
+    })
+    this.musicPlayer.on('playlistAdd', async (queue, playlist) => {
+        const guildDB = await this.guildSettings.get(queue.guild);
+        if (guildDB && guildDB.musicChannel){
+            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
+            if (musicChannel){
+                musicChannel.send(`Playlist ajoutée à la liste d'attente :`);
+            }
+        }
+    })
+    this.musicPlayer.on('queueEnd', async (queue) => {
+        const guildDB = await this.guildSettings.get(queue.guild);
+        if (guildDB && guildDB.musicChannel){
+            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
+            if (musicChannel){
+                musicChannel.send(`Fin de la file d'attente !`);
+            }
+        }
+    })
+    this.musicPlayer.on('songChanged', async (queue, song) => {
+        const guildDB = await this.guildSettings.get(queue.guild);
+        if (guildDB && guildDB.musicChannel){
+            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
+            if (musicChannel){
+                musicChannel.send(`Lecture de la musique : ${song.name}`);
+            }
+        }
+    })
+    this.musicPlayer.on('clientDisconnect', async (queue) => {
+        const guildDB = await this.guildSettings.get(queue.guild);
+        if (guildDB && guildDB.musicChannel){
+            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
+            if (musicChannel){
+                musicChannel.send(`Déconnexion forcée par commande modérateur !`);
+            }
+        }
+    })
+    this.musicPlayer.on('clientUndeafen', async (queue) => {
+        const guildDB = await this.guildSettings.get(queue.guild);
+        if (guildDB && guildDB.musicChannel){
+            const musicChannel = await fetchChannel(this, guildDB.musicChannel);
+            if (musicChannel){
+                musicChannel.send(`Un modérateur m'a rendu l'audition !`);
+            }
+        }
+    })
+    this.musicPlayer.on('error', async (error, queue) => {
+            const guildDB = await this.guildSettings.get(queue.guild);
+            if (guildDB && guildDB.musicChannel){
+                const musicChannel = await fetchChannel(this, guildDB.musicChannel);
+                if (musicChannel){
+                    musicChannel.send(`Une erreur est survenu : ${error}`);
+                }
+            }
+        })
+      // TODO ADD LES FONCTIONS POUR LES PLAYLISTS
 
     // this.client.functions.embed()
     this.functions = {
-        embed: embed,
-        getBotInformations: getBotInformations,
-        displayBotInfos: displayBotInfos,
+        checkMusicChannelExistence: checkMusicChannelExistence,
+        checkUserInVoiceChannel: checkUserInVoiceChannel,
+        checkUserInSameVoiceChannelAsBot: checkUserInSameVoiceChannelAsBot,
+        createMusicChannel: createMusicChannel,
         createNewMemberCard: createNewMemberCard,
         createRemovedMemberCard: createRemovedMemberCard,
-        logLoadedHandlers: logLoadedHandlers
+        displayBotInfos: displayBotInfos,
+        embed: embed,
+        fetchChannel: fetchChannel,
+        getBotInformations: getBotInformations,
+        logLoadedHandlers: logLoadedHandlers,
+        logToMusicChannel: logToMusicChannel,
+        musicEmbed: musicEmbed
     }
     this.guildSettings = new GuildsProvider();
 
