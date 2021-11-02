@@ -142,7 +142,6 @@ module.exports = {
         }
     },
     musicEmbed: function (title, URL, duration, status, thumbnail, author, color, queueSize){
-        console.log(queueSize)
         let musicEmbed = new MessageEmbed();
         musicEmbed.setTitle(title)
             .setURL(URL)
@@ -153,5 +152,14 @@ module.exports = {
             .addField("Statut", status ? "En Live" : "Vidéo", true)
             .addField("File d'attente", queueSize.toString(), true);
         return musicEmbed;
+    },
+    playlistEmbed: function (title, URL, author, color, numberSongs){
+        let playlistEmbed = new MessageEmbed();
+        playlistEmbed.setTitle(title)
+            .setURL(URL)
+            .setColor(color)
+            .setDescription(`Playlist demandée par <@${author.id}>`)
+            .addField("File d'attente", numberSongs.toString(), true);
+        return playlistEmbed;
     }
 }

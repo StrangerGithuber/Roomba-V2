@@ -1,6 +1,6 @@
 const { Command } = require('discord-akairo');
 
-class MusicCommand extends Command {
+class PlayCommand extends Command {
     constructor() {
         super('play', {
             aliases: ['play', 'p'],
@@ -31,7 +31,7 @@ class MusicCommand extends Command {
             }
             if (await this.client.functions.checkUserInVoiceChannel(message)){
                 if (await this.client.functions.checkUserInSameVoiceChannelAsBot(message, queue)){
-                    let musicEmbed = this.client.functions.embed();
+                    let musicEmbed;
                     await queue.join(message.member.voice.channel);
                     const loading = await channel.channelObject.send("Recherche de la musique ...");
                     await queue.play(search).then(async data => {
@@ -54,4 +54,4 @@ class MusicCommand extends Command {
 
     }
 }
-module.exports = MusicCommand;
+module.exports = PlayCommand;

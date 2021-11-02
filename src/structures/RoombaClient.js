@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const {DMPErrors} = require("discord-music-player");
 const { Player } = require("discord-music-player");
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
-const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel } = require("../util/functions");
+const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbed, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider } = require("./Providers");
 const { color } = require("../util/colors");
@@ -78,7 +78,7 @@ module.exports = class RoombaClient extends AkairoClient {
         if (guildDB && guildDB.musicChannel){
             const musicChannel = await fetchChannel(this, guildDB.musicChannel);
             if (musicChannel){
-                musicChannel.send(`Playlist ajoutée à la liste d'attente :`);
+                musicChannel.send(`Playlist ajoutée à la liste d'attente!`);
             }
         }
     })
@@ -143,7 +143,8 @@ module.exports = class RoombaClient extends AkairoClient {
         getBotInformations: getBotInformations,
         logLoadedHandlers: logLoadedHandlers,
         logToMusicChannel: logToMusicChannel,
-        musicEmbed: musicEmbed
+        musicEmbed: musicEmbed,
+        playlistEmbed: playlistEmbed
     }
     this.guildSettings = new GuildsProvider();
 
