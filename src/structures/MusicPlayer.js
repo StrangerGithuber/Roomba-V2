@@ -3,9 +3,9 @@ const {Player} = require("discord-music-player");
 
 
 class MusicPlayer extends Player{
-    constructor(discordJSClient, GuildSettings, AkairoClient) {
+    constructor(DiscordJSClient, GuildSettings, AkairoClient) {
         super(
-            discordJSClient,
+            DiscordJSClient,
             {
                 leaveOnEmpty: true,
                 deafenOnJoin: true
