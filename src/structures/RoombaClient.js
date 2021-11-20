@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 const {MusicPlayer} = require("./MusicPlayer");
-const {initDiscordMusicPlayerEvents} = require("../util/musicPlayerEvents");
-const {DMPErrors} = require("discord-music-player");
-const { Player } = require("discord-music-player");
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
-const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbed, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel } = require("../util/functions");
+const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbed, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel,
+    resolve, leaveBlacklistedGuild
+} = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
-const { GuildsProvider } = require("./Providers");
+const { GuildsProvider, ModerationProvider } = require("./Providers");
 const { color } = require("../util/colors");
 const ts = new Date();
 
@@ -70,12 +69,15 @@ module.exports = class RoombaClient extends AkairoClient {
         embed: embed,
         fetchChannel: fetchChannel,
         getBotInformations: getBotInformations,
+        leaveBlacklistedGuild: leaveBlacklistedGuild,
         logLoadedHandlers: logLoadedHandlers,
         logToMusicChannel: logToMusicChannel,
         musicEmbed: musicEmbed,
-        playlistEmbed: playlistEmbed
+        playlistEmbed: playlistEmbed,
+        resolve: resolve,
     }
     this.guildSettings = new GuildsProvider();
+    this.moderation = new ModerationProvider();
 
     // Discord Music Player client
     this.musicPlayer = new MusicPlayer(this.util.client, this.guildSettings, this);

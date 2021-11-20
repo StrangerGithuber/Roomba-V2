@@ -91,6 +91,14 @@ module.exports = {
             bots: thisClient.client.users.cache.filter(u => u.bot).size
         }
     },
+    leaveBlacklistedGuild: async function (guild, owner, timeout){
+        await owner.createDM().then(dm => {
+            dm.send(`Nous avons blacklisté votre serveur, n'essayez plus d'ajouter notre bot.`);
+        });
+        setTimeout(async () => {
+            await guild.leave();
+        }, timeout);
+    },
     logLoadedHandlers : function (commandHandler, listenerHandler, inhibitorHandler){
         console.clear();
         console.log("════════════════════════════════════════════");
@@ -161,5 +169,10 @@ module.exports = {
             .setDescription(`Playlist demandée par <@${author.id}>`)
             .addField("File d'attente", numberSongs.toString(), true);
         return playlistEmbed;
+    },
+    resolve: function(path, obj) {
+        return path.split('.').reduce(function(prev, curr) {
+            return prev ? prev[curr] : null
+        }, obj || self)
     }
 }

@@ -10,7 +10,7 @@ class UserBlacklistInhibitor extends Inhibitor {
     }
 
     async exec(message) {
-        const blacklist = await this.client.guildSettings.getSetting(message.guild, "blackListedChannels");
+        const blacklist = await this.client.guildSettings.getSettingRecursively(message.guild, "blacklist.channels");
         return blacklist.includes(message.channel.id);
     }
 }

@@ -1,8 +1,8 @@
 const { Inhibitor } = require('discord-akairo');
 
-class UserBlacklistInhibitor extends Inhibitor {
+class UserGuildBlacklistInhibitor extends Inhibitor {
     constructor() {
-        super('userBlacklist', {
+        super('userGuildBlacklist', {
             reason: 'vous êtes blacklisté du bot sur ce serveur',
             type: "post",
             priority: 2
@@ -10,9 +10,10 @@ class UserBlacklistInhibitor extends Inhibitor {
     }
 
     async exec(message) {
-        const blacklist = await this.client.guildSettings.getSetting(message.guild, "blackListedUsers");
+        const blacklist = await this.client.guildSettings.getSettingRecursively(message.guild, "blacklist.users");
         return blacklist.includes(message.author.id);
     }
+
 }
 
-module.exports = UserBlacklistInhibitor;
+module.exports = UserGuildBlacklistInhibitor;

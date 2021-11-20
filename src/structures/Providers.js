@@ -1,4 +1,5 @@
-const { Guild } = require("./Models");
+const { Guild, Moderation } = require("./Models");
+const {resolve} = require("../util/functions");
 
 
 class GuildsProvider {
@@ -12,7 +13,12 @@ class GuildsProvider {
             return data[setting];
         }
     }
-
+    async getSettingRecursively(guild, pathToSetting){
+        const data = await this.get(guild);
+        if (data){
+            return resolve(pathToSetting, data);
+        }
+    }
     async update(guild, settings){
         let data = await this.get(guild);
         if (typeof data !== "object") data = {}
@@ -20,6 +26,19 @@ class GuildsProvider {
             if (data[key] !== settings[key]) data[key] = settings[key]
         }
         await data.save();
+    }
+    async updateRecursively(guildToUpdate, newSetting, split, depth){
+        let count = -1;
+        function recursiveObject(obj, count, depth, split, newSetting) {
+            count ++;
+            if (count === depth - 1){
+                obj[split[count]] = newSetting;
+            } else {
+                recursiveObject(obj[split[count]], count, depth, split, newSetting);
+            }
+        }
+        recursiveObject(guildToUpdate, count, depth, split, newSetting);
+        await guildToUpdate.save();
     }
     async delete(guild){
         let data = await this.get(guild);
@@ -29,4 +48,51 @@ class GuildsProvider {
     }
 }
 
-module.exports = { GuildsProvider }
+class ModerationProvider {
+    async get(){
+        const data = await Moderation.findOne({ id: 1 });
+        if (data) return data;
+    }
+    async getSetting(setting){
+        const data = await this.get();
+        if (data){
+            return data[setting];
+        }
+    }
+    async getSettingRecursively(pathToSetting){
+        const data = await this.get();
+        if (data){
+            return resolve(pathToSetting, data);
+        }
+    }
+    async update(settings){
+        let data = await this.get();
+        if (typeof data !== "object") data = {}
+        for (const key in settings){
+            if (data[key] !== settings[key]) data[key] = settings[key]
+        }
+        await data.save();
+    }
+    async updateRecursively(newSetting, split, depth){
+        const guildToUpdate = await this.get();
+        let count = -1;
+        function recursiveObject(obj, count, depth, split, newSetting) {
+            count ++;
+            if (count === depth - 1){
+                obj[split[count]] = newSetting;
+            } else {
+                recursiveObject(obj[split[count]], count, depth, split, newSetting);
+            }
+        }
+        recursiveObject(guildToUpdate, count, depth, split, newSetting);
+        await guildToUpdate.save();
+    }
+    async delete(){
+        let data = await this.get();
+        if (data){
+            await data.delete();
+        }
+    }
+}
+
+module.exports = { GuildsProvider, ModerationProvider }
