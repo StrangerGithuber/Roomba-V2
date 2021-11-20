@@ -1,6 +1,7 @@
 const { Inhibitor } = require('discord-akairo');
+const {OWNER_ID} = require("../../util/config");
 
-class UserBlacklistInhibitor extends Inhibitor {
+class ChannelBlacklistInhibitor extends Inhibitor {
     constructor() {
         super('channelBlacklist', {
             reason: 'ce salon est blacklisté',
@@ -15,8 +16,9 @@ class UserBlacklistInhibitor extends Inhibitor {
             await this.client.guildSettings.create(message.guild);
             blacklist = await this.client.guildSettings.getSettingRecursively(message.guild, "blacklist.channels");
         }
+        if (message.author.id === OWNER_ID) return false;
         return blacklist.includes(message.channel.id);
     }
 }
 
-module.exports = UserBlacklistInhibitor;
+module.exports = ChannelBlacklistInhibitor;

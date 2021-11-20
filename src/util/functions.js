@@ -26,12 +26,12 @@ module.exports = {
             channelObject: null
         };
         if (guildDB){
-            if (guildDB.musicChannel){
-                if (currentMessage.channel.id.toString() === guildDB.musicChannel.toString()){
+            if (guildDB.music.channel){
+                if (currentMessage.channel.id.toString() === guildDB.music.channel.toString()){
                     channel.allowed = true;
                     channel.channelObject = currentMessage.channel;
                 }else{
-                    const fetchedChannel = await currentMessage.guild.channels.cache.find(c => c.id === guildDB.musicChannel.toString());
+                    const fetchedChannel = await currentMessage.guild.channels.cache.find(c => c.id === guildDB.music.channel.toString());
                     if (fetchedChannel){
                         channel.allowed = false;
                         currentMessage.channel.send("Vous devez être dans le channel musique pour effectuer cette commande !");
@@ -55,7 +55,11 @@ module.exports = {
             position: 1,
             reason: "No welcome music channel found, so one was created!"
         })
-        await GuildProvider.update(guild, {musicChannel: newMusicChannel.id});
+        const guildToUpdate = await GuildProvider.get(guild);
+        if (guildToUpdate) {
+            guildToUpdate.music.channel = newMusicChannel.id;
+            await guildToUpdate.save();
+        }
         return AkairoClient.channels.cache.get(newMusicChannel.id);
     },
     createNewMemberCard: async function (member) {
@@ -142,8 +146,8 @@ module.exports = {
         console.log("════════════════════════════════════════════");
     },
     logToMusicChannel : async function (queue, guildDB, message, GuildsProvider, AkairoClient){
-        if (guildDB.musicChannel){
-            const musicChannel = await queue.guild.channels.cache.find(channel => channel.id === guildDB.musicChannel.toString());
+        if (guildDB.music.channel){
+            const musicChannel = await queue.guild.channels.cache.find(channel => channel.id === guildDB.music.channel.toString());
             if (musicChannel){
                 await musicChannel.send(message)
             }else{
