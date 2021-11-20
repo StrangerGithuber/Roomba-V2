@@ -81,6 +81,16 @@ module.exports = {
     fetchChannel: async function(AkairoClient, channelID){
         return await AkairoClient.channels.cache.find(c => c.id === channelID);
     },
+    generateModels: async function(client){
+        const guilds = [];
+        client.guilds.cache.map(e => guilds.push(e))
+        for (const guild of guilds) {
+            const data = await client.guildSettings.get(guild);
+            if(!data) await client.guildSettings.create(guild);
+        }
+        const moderation = await client.moderation.get();
+        if (!moderation) await client.moderation.create();
+    },
     getBotInformations: function (thisClient){
         return {
             servers: thisClient.client.guilds.cache.size,

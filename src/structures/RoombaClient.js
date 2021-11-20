@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const {MusicPlayer} = require("./MusicPlayer");
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
 const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbed, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel,
-    resolve, leaveBlacklistedGuild
+    resolve, leaveBlacklistedGuild, generateModels
 } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider, ModerationProvider } = require("./Providers");
@@ -68,6 +68,7 @@ module.exports = class RoombaClient extends AkairoClient {
         displayBotInfos: displayBotInfos,
         embed: embed,
         fetchChannel: fetchChannel,
+        generateModels: generateModels,
         getBotInformations: getBotInformations,
         leaveBlacklistedGuild: leaveBlacklistedGuild,
         logLoadedHandlers: logLoadedHandlers,

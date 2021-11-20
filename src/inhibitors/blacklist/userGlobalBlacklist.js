@@ -10,7 +10,11 @@ class UserGlobalBlacklistInhibitor extends Inhibitor {
     }
 
     async exec(message) {
-        const blacklist = await this.client.moderation.getSettingRecursively("blacklist.users");
+        let blacklist = await this.client.moderation.getSettingRecursively("blacklist.users");
+        if (blacklist === undefined || null){
+            await this.client.moderation.create();
+            blacklist = await this.client.moderation.getSettingRecursively("blacklist.users");
+        }
         return blacklist.includes(message.author.id);
     }
 

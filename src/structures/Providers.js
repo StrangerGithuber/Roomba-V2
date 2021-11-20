@@ -3,6 +3,17 @@ const {resolve} = require("../util/functions");
 
 
 class GuildsProvider {
+    async create(guild){
+        const existingGuild = await this.get(guild);
+        if (!existingGuild){
+            await Guild.create({
+                guildID: guild.id,
+            }, error => {
+                if(error) return console.log(error);
+                console.log(`Nouveau serveur -> ${guild.name} (${guild.id})`);
+            })
+        }
+    }
     async get(guild){
         const data = await Guild.findOne({ guildID: guild.id });
         if (data) return data;
@@ -49,6 +60,17 @@ class GuildsProvider {
 }
 
 class ModerationProvider {
+    async create(){
+        const existingModeration = await this.get();
+        if (!existingModeration){
+            await Moderation.create({
+                id: 1,
+            }, error => {
+                if(error) return console.log(error);
+                console.log(`Moderation Model deployed`);
+            })
+        }
+    }
     async get(){
         const data = await Moderation.findOne({ id: 1 });
         if (data) return data;

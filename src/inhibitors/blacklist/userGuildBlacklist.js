@@ -10,7 +10,11 @@ class UserGuildBlacklistInhibitor extends Inhibitor {
     }
 
     async exec(message) {
-        const blacklist = await this.client.guildSettings.getSettingRecursively(message.guild, "blacklist.users");
+        let blacklist = await this.client.guildSettings.getSettingRecursively(message.guild, "blacklist.users");
+        if (blacklist === undefined || null){
+            await this.client.guildSettings.create(message.guild);
+            blacklist = await this.client.guildSettings.getSettingRecursively(message.guild, "blacklist.users");
+        }
         return blacklist.includes(message.author.id);
     }
 
