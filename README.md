@@ -23,20 +23,69 @@ Discord JS V13                 |  Discord Akairo           |  Discord Music Play
 
 ```bash
 client
-   ├──src
-   │  ├───commands
-   │  │   ├───dev
-   │  │   ├───infos
-   │  │   ├───misc
-   │  │   ├───moderation
-   │  │   └───music
-   │  ├───inhibitors
-   │  │   └───blacklist
-   │  ├───listeners
-   │  │   ├───client
-   │  │   └───commandHandler
-   │  ├───structures
-   │  └───util
+   └── src
+       ├── commands
+       │   ├── dev
+       │   │   ├── eval.js
+       │   │   ├── restart.js
+       │   │   └── updateAll.js
+       │   ├── infos
+       │   │   ├── serverinfo.js
+       │   │   └── userinfo.js
+       │   ├── misc
+       │   │   ├── help.js
+       │   │   ├── ping.js
+       │   │   ├── prefix.js
+       │   │   └── setting.js
+       │   ├── moderation
+       │   │   ├── ban.js
+       │   │   └── kick.js
+       │   └── music
+       │       ├── loop.js
+       │       ├── nowPlaying.js
+       │       ├── pause.js
+       │       ├── play.js
+       │       ├── playlist.js
+       │       ├── progression.js
+       │       ├── shuffle.js
+       │       ├── skip.js
+       │       ├── stop.js
+       │       └── volume.js
+       ├── index.js
+       ├── inhibitors
+       │   ├── blacklist
+       │   │   ├── channelBlacklist.js
+       │   │   ├── guildBlacklist.js
+       │   │   ├── userGlobalBlacklist.js
+       │   │   └── userGuildBlacklist.js
+       │   └── enabledModules
+       │       └── musicModule.js
+       ├── listeners
+       │   ├── client
+       │   │   ├── guildCreate.js
+       │   │   ├── guildDelete.js
+       │   │   ├── guildMemberAdd.js
+       │   │   ├── guildMemberRemove.js
+       │   │   └── ready.js
+       │   └── commandHandler
+       │       ├── commandBlocked.js
+       │       ├── cooldown.js
+       │       └── missingPermissions.js
+       ├── logger
+       │   ├── BaseLogProvider.js
+       │   ├── LogProviders.js
+       │   └── MusicLogProvider.js
+       ├── structures
+       │   ├── Models.js
+       │   ├── MusicPlayer.js
+       │   ├── Providers.js
+       │   └── RoombaClient.js
+       └── util
+           ├── canvasFunctions.js
+           ├── colors.js
+           ├── config.js
+           ├── functions.js
+           └── musicPlayerEvents.js
 ```
 ## Bot Custom Colors
 
@@ -54,12 +103,13 @@ To run this project, you will need to add the following environment variables to
 module.exports = {
     CLIENT_TOKEN: '<discord client token>',
     MONGO_STRING: "mongodb+srv://<pseudo>:<password>@<cluster>.mongodb.net/<dataBaseName>?retryWrites=true&w=majority"
+    OWNER_ID: "<your discord account id>"
 }
 
 ```
 `CLIENT_TOKEN` can be found in the discord developper section : [Here](https://discord.com/developers/applications/)  
 `MONGO_STRING` can be found when you create your mongoDB cluster : [Here](https://cloud.mongodb.com/)
-
+`OWNER_ID` can be found when right clicking on your account on discord with developper settings activated
 ## Run Locally
 
 Clone the project from github
@@ -128,6 +178,7 @@ Stop `pm2` server
 ## Optimizations
 
 - Created a sub-class MusicPlayer that extend Player to make the events handled automaticaly on creation
+- Created Log Provider with extended class to generate custom log outputs inside console and inside database, sorted by type
 
 
 
