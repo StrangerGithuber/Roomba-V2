@@ -136,8 +136,11 @@ class BaseLogProvider {
 
     async deleteExpiredLogs() {
         await this.global(`Deleted expired logs`);
-        const types = ["global", "log", "info", "warn", "error"];
-        types.forEach(type => {this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date())});
+        const types = ["global", "log", "info", "warn", "error", "command"];
+
+        types.forEach(type => {
+            this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date())
+        });
         this.collection = await this.collection.save();
     }
 }
