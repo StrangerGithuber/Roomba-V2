@@ -106,7 +106,8 @@ module.exports = class RoombaClient extends AkairoClient {
         try{
             await mongoose.connect(MONGO_STRING, {
                 useNewUrlParser: true,
-                useUnifiedTopology: true
+                useUnifiedTopology: true,
+                minPoolSize : 10
             });
             console.log("════════════════════════════════════════════");
             console.log(" " + ts.toLocaleString() + " - Database Connected");
