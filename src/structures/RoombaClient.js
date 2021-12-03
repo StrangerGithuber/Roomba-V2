@@ -118,8 +118,9 @@ module.exports = class RoombaClient extends AkairoClient {
 
         await this.init();
         setInterval(async () => {
-            await this.log.base.deleteExpiredLogs()
-        }, 21600000);
+            await this.log.base.deleteExpiredLogs();
+            await this.log.music.deleteExpiredLogs();
+        }, 1800000);
         return this.login(CLIENT_TOKEN)
     }
 }

@@ -50,12 +50,11 @@ class BaseLogProvider {
                 userTag: author.tag,
             },
             command: {
-                // category: command.category,
                 name: command,
                 data : data
             },
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
         });
         this.collection = await this.collection.save();
     }
@@ -67,7 +66,7 @@ class BaseLogProvider {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
         });
         this.collection = await this.collection.save();
         console.log(consoleMessage);
@@ -80,7 +79,7 @@ class BaseLogProvider {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
         });
         this.collection = await this.collection.save();
         console.log(consoleMessage);
@@ -93,7 +92,7 @@ class BaseLogProvider {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 2))
         });
         this.collection = await this.collection.save();
         console.log(consoleMessage);
@@ -106,7 +105,7 @@ class BaseLogProvider {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 4))
         });
         this.collection = await this.collection.save();
         console.log(consoleMessage);
@@ -136,7 +135,7 @@ class BaseLogProvider {
     }
 
     async deleteExpiredLogs() {
-        await this.global("Deleting expired logs");
+        await this.global(`Deleted expired logs`);
         const types = ["global", "log", "info", "warn", "error"];
         types.forEach(type => {this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date())});
         this.collection = await this.collection.save();

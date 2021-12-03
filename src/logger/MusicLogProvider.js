@@ -12,7 +12,7 @@ class MusicLogProvider extends BaseLogProvider {
                 data: data
             },
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
         });
         setTimeout(async () => {
             this.collection = await this.collection.save();
@@ -24,7 +24,7 @@ class MusicLogProvider extends BaseLogProvider {
             guildID: guildID,
             error: error,
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 12))
         });
         setTimeout(async () => {
             this.collection = await this.collection.save();
