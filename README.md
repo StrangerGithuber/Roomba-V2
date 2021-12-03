@@ -128,6 +128,7 @@ Stop `pm2` server
 ## Optimizations
 
 - Created a sub-class MusicPlayer that extend Player to make the events handled automaticaly on creation
+- Created Log Provider with extended class to generate custom log outputs inside console and inside database, sorted by type
 
 
 
