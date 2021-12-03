@@ -1,5 +1,5 @@
 const { Command } = require('discord-akairo');
-const { Guild } = require('../../structures/Models');
+
 
 class UpdateAllCommand extends Command {
     constructor() {

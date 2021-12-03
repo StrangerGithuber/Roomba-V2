@@ -19,6 +19,7 @@ class PrefixCommand extends Command {
 
     async exec(message, { newPrefix }) {
         if (!newPrefix) return message.channel.send(`Prefix actuel -> \`${await this.handler.prefix(message)}\``);
+        await this.client.log.base.logCommand(message.guildId, message.author, this.id, {oldPrefix: await this.handler.prefix(message), newPrefix : newPrefix});
         await this.client.guildSettings.update(message.guild, {prefix: newPrefix});
         await message.delete();
         return message.channel.send(`Le prefix du serveur est maintenant -> \`${newPrefix}\``);

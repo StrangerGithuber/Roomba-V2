@@ -45,7 +45,9 @@ class PlayCommand extends Command {
                                 channel.channelObject.send("Aucune musique n'a été trouvé!")
                             }
                         },2000)
+                    await this.client.log.music.logCommand(message.guildId, message.author, this.id, {search: search});
                     }).catch(error => {
+                        this.client.log.music.error(message.guildId, error.message);
                         channel.channelObject.send(error.message);
                     })
                 }

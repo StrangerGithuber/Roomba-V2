@@ -24,6 +24,7 @@ class StopCommand extends Command {
                     if (await this.client.functions.checkUserInSameVoiceChannelAsBot(message, guildQueue)) {
                         message.channel.send("Arrêt de la musique! Déconnexion...");
                         guildQueue.stop();
+                        await this.client.log.music.logCommand(message.guildId, message.author, this.id, null);
                     }
                 }
             } else {

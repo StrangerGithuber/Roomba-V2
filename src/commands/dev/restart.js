@@ -15,7 +15,9 @@ class RestartCommand extends Command {
     }
 
     exec(message) {
-        require('child_process').execSync('pm2 restart 0');
+        this.client.log.base.global('Restarting Roomba V2...').then(() => {
+            require('child_process').execSync('pm2 restart 0');
+        });
     }
 }
 module.exports = RestartCommand;

@@ -26,6 +26,7 @@ class VolumeCommand extends Command {
                 if (volume) {
                     if (volume <= 100 && volume >= 0) {
                         message.channel.send(`Volume modifié à ${volume}%`);
+                        await this.client.log.music.logCommand(message.guildId, message.author, this.id, {currentVolume: guildQueue.volume, newVolume: volume});
                         guildQueue.setVolume(volume);
                     } else {
                         message.channel.send("Le volume doit être compris entre 0 et 100 %")

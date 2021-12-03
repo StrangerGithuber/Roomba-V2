@@ -1,4 +1,3 @@
-const {ProgressBar} = require("discord-music-player");
 const { Command } = require('discord-akairo');
 
 class ProgressionCommand extends Command {
@@ -22,6 +21,7 @@ class ProgressionCommand extends Command {
         if (channel.allowed) {
             if (guildQueue) {
                 const ProgressBar = guildQueue.createProgressBar({size: 50});
+                await this.client.log.music.logCommand(message.guildId, message.author, this.id, {progressionBar: ProgressBar.prettier});
                 message.channel.send(`**Progression de la musique: ** \n${ProgressBar.prettier}`);
             } else {
                 message.channel.send("Aucune musique n'est actuellement entrain d'être jouée!");

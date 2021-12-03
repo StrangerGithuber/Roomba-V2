@@ -88,6 +88,16 @@ const baseLogSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    global: {
+        type: Array,
+        required: false,
+        default: []
+    },
+    command: {
+        type: Array,
+        required: false,
+        default: []
+    },
     log: {
         type: Array,
         required: false,

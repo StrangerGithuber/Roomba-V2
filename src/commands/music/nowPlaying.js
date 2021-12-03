@@ -23,6 +23,7 @@ class NowPlayingCommand extends Command {
                 const nowPlaying = await guildQueue.nowPlaying;
                 if (nowPlaying) {
                     let musicEmbed = this.client.functions.musicEmbed("Musique en cours : " + nowPlaying.name, nowPlaying.url, nowPlaying.duration, nowPlaying.isLive, nowPlaying.thumbnail, message.author, this.client.colors.color.darkpurple, nowPlaying.queue.songs.length);
+                    await this.client.log.music.logCommand(message.guildId, message.author, this.id, {musicName: nowPlaying.name, musicURL: nowPlaying.url});
                     message.channel.send({embeds: [musicEmbed]});
                 } else {
                     message.channel.send(`Aucune musique n'est actuellement entrain d'être jouée!`);

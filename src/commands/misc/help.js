@@ -1,5 +1,4 @@
 const { Command } = require('discord-akairo');
-const { stripIndents } = require("common-tags")
 class HelpCommand extends Command {
     constructor() {
         super('help', {
@@ -16,7 +15,7 @@ class HelpCommand extends Command {
 
     async exec(message, { command }) {
         const prefix = await this.handler.prefix(message);
-
+        console.log(command);
         if (!command) {
             let embed = this.client.functions.embed()
                 .setAuthor(
@@ -39,6 +38,7 @@ class HelpCommand extends Command {
             }
             await embed.addField('**――――――――――――**', `**\`${prefix}help <commande>\` pour des infos sur une commande spécifique.**
                 Exemples: \`${prefix}help ping\` | \`${prefix}help userinfo\``)
+            await this.client.log.base.logCommand(message.guildId, message.author, this.id);
             return message.channel.send({embeds: [embed]})
         }
 
@@ -56,17 +56,8 @@ class HelpCommand extends Command {
             `)
 
         await message.delete();
+        await this.client.log.base.logCommand(message.guildId, message.author, this.id, command.id);
         return message.channel.send({embeds: [embed]})
-        // return message.channel.send(stripIndents`
-        // \`\`\`makefile
-        // [Help : Command => ${command.aliases[0]}] ${command.ownerOnly ? '/!\\ Admin Only /!\\' : ''}
-        //
-        // ${command.description.content}
-        //
-        // Utilisation: ${prefix}${command.description.usage}
-        // Exemples: ${prefix}${command.description.exemples.join(` | ${prefix}`)}
-        //
-        // \`\`\``);
     }
 
 }

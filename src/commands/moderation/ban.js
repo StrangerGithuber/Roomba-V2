@@ -8,8 +8,8 @@ class BanCommand extends Command {
             category: 'Modération',
             description: {
                 content: 'La commande ban permet de bannir un utilisateur du serveur',
-                usage: "ban <member> <reason>",
-                exemples: ['ban @Alex', 'ban @Alex Spam'],
+                usage: "ban <member> <day> <reason>",
+                exemples: ['ban @Alex', 'ban @Alex Spam', 'ban @Alex 7 Spam'],
             },
             channel: "guild",
             args: [
@@ -31,9 +31,13 @@ class BanCommand extends Command {
             await message.delete();
             return message.channel.send("You can't ban the server owner!")
         }
-        member ? await member.ban({days: day, reason: reason}) : message.channel.send("Aucun utilisateur spécifié !");
-        if (guildDB.logChannel !== null){
-            const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.logChannel);
+        if (member){
+            await member.ban({days: day, reason: reason})
+        }else{
+            return message.channel.send("Aucun utilisateur spécifié !")
+        }
+        if (guildDB.log.channel !== null){
+            const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.log.channel);
             if (logChannel !== null){
                 const embed = await this.client.functions.embed()
                     .setTitle(`Ban ${member.user.tag}`)
@@ -50,6 +54,7 @@ class BanCommand extends Command {
                 logChannel.send({ embeds: [embed]})
             }
         }
+        await this.client.log.base.logCommand(message.guildId, message.author, this.id, {memberID: member.user.id, day : day, reason: reason});
         await message.delete();
     }
 }

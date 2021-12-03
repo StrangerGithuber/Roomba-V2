@@ -1,5 +1,4 @@
 const { Command } = require('discord-akairo');
-const { Utils, Queue } = require('discord-music-player');
 class PlaylistCommand extends Command {
     constructor() {
         super('playlist', {
@@ -38,10 +37,12 @@ class PlaylistCommand extends Command {
                         loading.delete();
                         if (data){
                             playlistEmbed = this.client.functions.playlistEmbed(data.name, data.url, message.author, this.client.colors.color.darkpurple, data.songs.length);
+                            this.client.log.music.logCommand(message.guildId, message.author, this.id, {playlistData: data.name, playlistURL: data.url, playlistSongs: data.songs.length});
                             channel.channelObject.send({ embeds : [playlistEmbed]});
                         }
                     }).catch(error => {
                         loading.delete();
+                        this.client.log.music.error(message.guildId, error.message);
                         channel.channelObject.send(error.message);
                     });
 

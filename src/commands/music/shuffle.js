@@ -21,6 +21,7 @@ class ShuffleCommand extends Command {
         if (channel.allowed) {
             if (guildQueue) {
                 message.channel.send("La liste d'attente vient d'être mélangée ! ");
+                await this.client.log.music.logCommand(message.guildId, message.author, this.id, null);
                 guildQueue.shuffle();
             } else {
                 message.channel.send("Aucune musique n'est actuellement entrain d'être jouée!")

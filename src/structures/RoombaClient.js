@@ -79,6 +79,7 @@ module.exports = class RoombaClient extends AkairoClient {
         base: new BaseLogProvider(),
         music: new MusicLogProvider()
     }
+
     // Discord Music Player client
     this.musicPlayer = new MusicPlayer(this.util.client, this.guildSettings, this);
 
@@ -115,6 +116,9 @@ module.exports = class RoombaClient extends AkairoClient {
         }
 
         await this.init();
+        setInterval(async () => {
+            await this.log.base.deleteExpiredLogs()
+        }, 21600000);
         return this.login(CLIENT_TOKEN)
     }
 }

@@ -18,6 +18,7 @@ class MissingPermissionsListener extends Listener {
                     ● Permission${missing.length > 1 ? "s" : ""} :   \`\`\`${missing}\`\`\` 
                     ● Commande : \`\`\`${await this.client.guildSettings.getSetting(message.guild, "prefix")}${command.id}\`\`\` 
                 `)
+            await this.client.log.base.warn(message.guild.id, `Roomba V2 missing permissions for ${command.id} -> ${missing.join(', ')}`);
             return await message.reply({embeds: [embed]});
         }else{
             embed
@@ -27,6 +28,7 @@ class MissingPermissionsListener extends Listener {
                 ● Permission${missing.length > 1 ? "s" : ""} :   \`\`\`${missing}\`\`\` 
                 ● Commande : \`\`\`${await this.client.guildSettings.getSetting(message.guild, "prefix")}${command.id}\`\`\` 
                 `)
+            await this.client.log.base.warn(message.guild.id, `${message.author.tag} missing permissions for ${command.id} -> ${missing.join(', ')}`);
             return await message.reply({embeds: [embed]});
         }
     }

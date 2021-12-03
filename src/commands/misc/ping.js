@@ -27,6 +27,7 @@ class PingCommand extends Command {
             .setFooter(message.author.tag, message.author.displayAvatarURL())
             .setTimestamp();
         await message.delete();
+        await this.client.log.base.logCommand(message.guildId, message.author, this.id, {botLatency: botLantency.replaceAll("`", "").replaceAll("'", "").replaceAll(" ","").replaceAll("\n", ""), apiLatency : apiLantency.replaceAll("`", "").replaceAll("'", "").replaceAll(" ","").replaceAll("\n", "")});
         await sentMessage.edit({
             content: null,
             embeds: [embed]

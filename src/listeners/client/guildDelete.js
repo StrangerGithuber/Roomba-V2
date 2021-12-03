@@ -13,6 +13,7 @@ class GuildDeleteListener extends Listener {
     async exec(guild) {
         const guildToDelete = await Guild.findOne({guildID: guild.id});
         if (guildToDelete) {
+            await this.client.log.base.info(guild.id, `Deletion of: ${guild.name}`);
             await guildToDelete.delete();
         }
     }

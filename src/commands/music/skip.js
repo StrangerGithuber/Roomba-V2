@@ -22,6 +22,7 @@ class SkipCommand extends Command {
             if (guildQueue) {
                 message.channel.send("Passage à la musique suivante!");
                 guildQueue.skip();
+                await this.client.log.music.logCommand(message.guildId, message.author, this.id, null);
             } else {
                 message.channel.send("Aucune musique n'est actuellement entrain d'être jouée!");
             }

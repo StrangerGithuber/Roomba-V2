@@ -30,8 +30,8 @@ class KickCommand extends Command {
             return message.channel.send("You can't kick the server owner!")
         }
         member ? await member.kick(reason) : message.channel.send("Aucun utilisateur spécifié !");
-        if (guildDB.logChannel !== null){
-            const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.logChannel);
+        if (guildDB.log.channel !== null){
+            const logChannel = await message.guild.channels.cache.find(channel => channel.id === guildDB.log.channel);
             if (logChannel !== null){
                 const embed = await this.client.functions.embed()
                     .setTitle(`Kick ${member.user.tag}`)
@@ -47,6 +47,7 @@ class KickCommand extends Command {
                 logChannel.send({ embeds: [embed]})
             }
         }
+        await this.client.log.base.logCommand(message.guildId, message.author, this.id, {memberID: member.id, reason: reason});
         await message.delete();
     }
 }

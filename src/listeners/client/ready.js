@@ -15,6 +15,7 @@ class ReadyListener extends Listener {
         this.client.functions.displayBotInfos(this.client.functions.getBotInformations(this));
         console.log(` ${ts.toLocaleString()} - Roomba V2 Started`);
         console.log("════════════════════════════════════════════");
+        await this.client.log.base.global(`Roomba V2 Started`);
     }
 }
 

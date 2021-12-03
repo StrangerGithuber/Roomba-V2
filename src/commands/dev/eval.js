@@ -28,6 +28,7 @@ module.exports = class EvalCommand extends Command {
     }
 
     async exec(message, { code }) {
+        this.client.log.base.global(`${message.author.tag} eval => ${code}`);
         try {
             let evaled = eval(code);
 

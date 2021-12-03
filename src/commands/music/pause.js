@@ -1,5 +1,4 @@
 const { Command } = require('discord-akairo');
-const { DMPError } = require("discord-music-player")
 class PauseCommand extends Command {
     constructor() {
         super('pause', {
@@ -24,10 +23,12 @@ class PauseCommand extends Command {
                     case true:
                         message.channel.send("Redémarrage de la musique !");
                         guildQueue.setPaused(false);
+                        await this.client.log.music.logCommand(message.guildId, message.author, this.id, {pauseCurrentState: "activated", pauseFutureState: "deactivated"});
                         break;
                     case false:
                         message.channel.send("Mise en pause de la musique !");
                         guildQueue.setPaused(true);
+                        await this.client.log.music.logCommand(message.guildId, message.author, this.id, {pauseCurrentState: "deactivated", pauseFutureState: "activated"});
                         break;
                 }
             } else {

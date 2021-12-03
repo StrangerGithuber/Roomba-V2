@@ -30,6 +30,36 @@ class BaseLogProvider {
         });
     }
 
+    async global(message) {
+        const consoleMessage = `[GLOBAL][${this.name}]: ${message}`;
+        const databaseMessage = `${message}`;
+        this.collection.global.push({
+            message: databaseMessage,
+            date: new Date(),
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 365))
+        });
+        this.collection = await this.collection.save();
+        console.log(consoleMessage);
+    }
+
+    async logCommand(guildID, author, command, data = null) {
+        this.collection.command.push({
+            guildID: guildID,
+            user: {
+                userID: author.id,
+                userTag: author.tag,
+            },
+            command: {
+                // category: command.category,
+                name: command,
+                data : data
+            },
+            date: new Date(),
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 6))
+        });
+        this.collection = await this.collection.save();
+    }
+
     async log(guildID, message) {
         const consoleMessage = `[LOG][${this.name}]: ${message} (${guildID})`;
         const databaseMessage = `${message}`;
@@ -85,6 +115,8 @@ class BaseLogProvider {
     async getLogs(guildID = null, type = null) {
         if (guildID === null){
             return {
+                global: this.collection.global,
+                command: this.collection.command,
                 logs: this.collection.log,
                 info: this.collection.info,
                 warning: this.collection.warn,
@@ -93,6 +125,7 @@ class BaseLogProvider {
         }
         if (type === null) {
             return {
+                command : this.collection["command"].command.filter(log => log.guildID === guildID),
                 log: this.collection["log"].filter(log => log.guildID === guildID),
                 info: this.collection["info"].filter(log => log.guildID === guildID),
                 warn: this.collection["warn"].filter(log => log.guildID === guildID),
@@ -101,8 +134,11 @@ class BaseLogProvider {
         }
         return this.collection[type].filter(log => log.guildID === guildID);
     }
-    async deleteExpiredLogs(type = "log") {
-        this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date());
+
+    async deleteExpiredLogs() {
+        await this.global("Deleting expired logs");
+        const types = ["global", "log", "info", "warn", "error"];
+        types.forEach(type => {this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date())});
         this.collection = await this.collection.save();
     }
 }
