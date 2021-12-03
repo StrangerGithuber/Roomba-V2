@@ -109,7 +109,7 @@ module.exports = {
 ```
 `CLIENT_TOKEN` can be found in the discord developper section : [Here](https://discord.com/developers/applications/)  
 `MONGO_STRING` can be found when you create your mongoDB cluster : [Here](https://cloud.mongodb.com/)
-
+`OWNER_ID` can be found when right clicking on your account on discord with developper settings activated
 ## Run Locally
 
 Clone the project from github
