@@ -54,6 +54,7 @@ To run this project, you will need to add the following environment variables to
 module.exports = {
     CLIENT_TOKEN: '<discord client token>',
     MONGO_STRING: "mongodb+srv://<pseudo>:<password>@<cluster>.mongodb.net/<dataBaseName>?retryWrites=true&w=majority"
+    OWNER_ID: "<your discord account id>"
 }
 
 ```
