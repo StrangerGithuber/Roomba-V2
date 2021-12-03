@@ -82,8 +82,37 @@ const moderationSchema = new mongoose.Schema({
     }
 })
 
+const baseLogSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    log: {
+        type: Array,
+        required: false,
+        default: []
+    },
+    info: {
+        type: Array,
+        required: false,
+        default: []
+    },
+    warn: {
+        type: Array,
+        required: false,
+        default: []
+    },
+    error: {
+        type: Array,
+        required: false,
+        default: []
+    }
+})
+
 
 module.exports = {
     Guild: mongoose.model('Guild', guildSchema),
-    Moderation: mongoose.model('Moderation', moderationSchema)
+    Moderation: mongoose.model('Moderation', moderationSchema),
+    Log: mongoose.model('Logs', baseLogSchema)
 }

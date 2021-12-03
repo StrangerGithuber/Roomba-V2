@@ -6,6 +6,7 @@ const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbe
 } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider, ModerationProvider } = require("./Providers");
+const { BaseLogProvider, MusicLogProvider } = require("../logger/LogProviders");
 const { color } = require("../util/colors");
 const ts = new Date();
 
@@ -48,15 +49,9 @@ module.exports = class RoombaClient extends AkairoClient {
         defaultCooldown: 3000,
         directory: "./src/commands/"
     });
-
     this.listenerHandler = new ListenerHandler(this, {
         directory: './src/listeners/'
     });
-
-
-
-
-
     // this.client.functions.embed()
     this.functions = {
         checkMusicChannelExistence: checkMusicChannelExistence,
@@ -79,14 +74,13 @@ module.exports = class RoombaClient extends AkairoClient {
     }
     this.guildSettings = new GuildsProvider();
     this.moderation = new ModerationProvider();
-
+    // Generic Logger
+    this.log = {
+        base: new BaseLogProvider(),
+        music: new MusicLogProvider()
+    }
     // Discord Music Player client
     this.musicPlayer = new MusicPlayer(this.util.client, this.guildSettings, this);
-    // this.musicPlayer = new Player(this.util.client, {
-        //     leaveOnEmpty: true,
-        //     deafenOnJoin: true,
-        // });
-
 
     //Theme
     // TODO need to add theme to the bot that can be changed via config file
@@ -96,17 +90,13 @@ module.exports = class RoombaClient extends AkairoClient {
     }
 
     init() {
-        this.inhibitorHandler = new InhibitorHandler(this, {
-            directory: 'src/inhibitors/'
-        });
+        this.inhibitorHandler = new InhibitorHandler(this, {directory: 'src/inhibitors/'});
         this.commandHandler.useListenerHandler(this.listenerHandler);
         this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
         this.listenerHandler.setEmitters({ commandHandler: this.commandHandler });
-
         this.commandHandler.loadAll();
         this.listenerHandler.loadAll();
         this.inhibitorHandler.loadAll();
-
         this.functions.logLoadedHandlers(this.commandHandler, this.listenerHandler, this.inhibitorHandler);
     }
 
