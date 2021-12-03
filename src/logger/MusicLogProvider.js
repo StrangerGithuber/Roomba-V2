@@ -29,7 +29,7 @@ class MusicLogProvider extends BaseLogProvider {
         setTimeout(async () => {
             this.collection = await this.collection.save();
         },5000)
-    }
+    }s
 }
 
 module.exports = { MusicLogProvider };

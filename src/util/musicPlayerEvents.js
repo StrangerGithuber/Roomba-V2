@@ -20,7 +20,7 @@ module.exports = {
                 await AkairoClient.log.music.event(queue.guild.id, 'playlistAdd', {channelID: queue.connection.channel.id, playlistName: playlist.name, author: playlist.author, url: playlist.url, numberSong: playlist.queue.songs.length});
                 // const musicChannel = await fetchChannel(AkairoClient, guildDB.music.channel);
                 // if (musicChannel){
-                //     musicChannel.send(`Playlist ajoutée à la liste d'attente!`);
+                ///     musicChannel.send(`Playlist ajoutée à la liste d'attente!`);
                 // }
             }
         })
