@@ -114,24 +114,24 @@ class BaseLogProvider {
     async getLogs(guildID = null, type = null) {
         if (guildID === null){
             return {
-                global: this.collection.global,
-                command: this.collection.command,
-                logs: this.collection.log,
-                info: this.collection.info,
-                warning: this.collection.warn,
-                error: this.collection.error
+                global: this.collection.global.reverse(),
+                command: this.collection.command.reverse(),
+                logs: this.collection.log.reverse(),
+                info: this.collection.info.reverse(),
+                warning: this.collection.warn.reverse(),
+                error: this.collection.error.reverse()
             };
         }
         if (type === null) {
             return {
-                command : this.collection["command"].command.filter(log => log.guildID === guildID),
-                log: this.collection["log"].filter(log => log.guildID === guildID),
-                info: this.collection["info"].filter(log => log.guildID === guildID),
-                warn: this.collection["warn"].filter(log => log.guildID === guildID),
-                error: this.collection["error"].filter(log => log.guildID === guildID)
+                command : this.collection["command"].filter(log => log.guildID === guildID).reverse(),
+                log: this.collection["log"].filter(log => log.guildID === guildID).reverse(),
+                info: this.collection["info"].filter(log => log.guildID === guildID).reverse(),
+                warn: this.collection["warn"].filter(log => log.guildID === guildID).reverse(),
+                error: this.collection["error"].filter(log => log.guildID === guildID).reverse()
             };
         }
-        return this.collection[type].filter(log => log.guildID === guildID);
+        return this.collection[type].filter(log => log.guildID === guildID).reverse();
     }
 
     async deleteExpiredLogs(forceMod = false) {
