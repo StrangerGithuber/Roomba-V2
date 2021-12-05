@@ -4,7 +4,7 @@ class PrefixCommand extends Command {
     constructor() {
         super('prefix', {
             aliases: ['prefix'],
-            category: 'Misc',
+            category: 'Administration',
             description: {
                 content: 'La commande prefix modifie le prefix du serveur',
                 usage: "prefix <newPrefix>",

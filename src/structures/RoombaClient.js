@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const {MusicPlayer} = require("./MusicPlayer");
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require("discord-akairo");
 const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbed, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel,
-    resolve, leaveBlacklistedGuild, generateModels
+    resolve, leaveBlacklistedGuild, generateModels, clearLogs
 } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider, ModerationProvider } = require("./Providers");
@@ -57,6 +57,7 @@ module.exports = class RoombaClient extends AkairoClient {
         checkMusicChannelExistence: checkMusicChannelExistence,
         checkUserInVoiceChannel: checkUserInVoiceChannel,
         checkUserInSameVoiceChannelAsBot: checkUserInSameVoiceChannelAsBot,
+        clearLogs: clearLogs,
         createMusicChannel: createMusicChannel,
         createNewMemberCard: createNewMemberCard,
         createRemovedMemberCard: createRemovedMemberCard,
@@ -84,7 +85,7 @@ module.exports = class RoombaClient extends AkairoClient {
     this.musicPlayer = new MusicPlayer(this.util.client, this.guildSettings, this);
 
     //Theme
-    // TODO need to add theme to the bot that can be changed via config file
+    // TODO need to add theme to the administration that can be changed via config file
         this.colors = {
             color: color
         }
@@ -118,8 +119,7 @@ module.exports = class RoombaClient extends AkairoClient {
 
         await this.init();
         setInterval(async () => {
-            await this.log.base.deleteExpiredLogs();
-            await this.log.music.deleteExpiredLogs();
+            await this.functions.clearLogs(this, false);
         }, 1800000);
         return this.login(CLIENT_TOKEN)
     }

@@ -4,7 +4,7 @@ const {OWNER_ID} = require("../../util/config");
 class UserGlobalBlacklistInhibitor extends Inhibitor {
     constructor() {
         super('userGlobalBlacklist', {
-            reason: 'vous êtes blacklisté du bot',
+            reason: 'vous êtes blacklisté du administration',
             type: "post",
             priority: 1
         })

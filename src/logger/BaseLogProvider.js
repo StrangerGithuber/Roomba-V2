@@ -36,7 +36,7 @@ class BaseLogProvider {
         this.collection.global.push({
             message: databaseMessage,
             date: new Date(),
-            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 365))
+            expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 31))
         });
         this.collection = await this.collection.save();
         console.log(consoleMessage);
@@ -134,13 +134,14 @@ class BaseLogProvider {
         return this.collection[type].filter(log => log.guildID === guildID);
     }
 
-    async deleteExpiredLogs() {
-        await this.global(`Deleted expired logs`);
+    async deleteExpiredLogs(forceMod = false) {
+        await this.global(`Deleted expired logs ${forceMod ? "- [FORCE MOD]" : ""}`);
         const types = ["global", "log", "info", "warn", "error", "command"];
-
-        types.forEach(type => {
-            this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date())
-        });
+        if (!forceMod){
+            types.forEach(type => {this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date())});
+        }else{
+            types.forEach(type => {this.collection[type] = []});
+        }
         this.collection = await this.collection.save();
     }
 }

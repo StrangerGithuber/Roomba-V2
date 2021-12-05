@@ -9,7 +9,7 @@ class RestartCommand extends Command {
                 usage: 'restart',
                 exemples: ['restart', 'rs'],
             },
-            category: 'Dev',
+            category: 'Administration',
             ownerOnly: true
         });
     }

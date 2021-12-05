@@ -6,7 +6,7 @@ class StopCommand extends Command {
             aliases: ['stop', 's'],
             category: 'Music',
             description: {
-                content: 'La commande stop permet de stopper la musique et de faire se déconnecter le bot!',
+                content: 'La commande stop permet de stopper la musique et de faire se déconnecter le administration!',
                 usage: "stop",
                 exemples: ['stop'],
             },

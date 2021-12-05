@@ -4,7 +4,7 @@ class HelpCommand extends Command {
         super('help', {
             aliases: ['help', 'h'],
             description: {
-                content: 'La commande help renvoie la liste de commande du bot!',
+                content: 'La commande help renvoie la liste de commande du administration!',
                 usage: 'help <commande>',
                 exemples: ['help', 'help ping', 'h ping'],
             },

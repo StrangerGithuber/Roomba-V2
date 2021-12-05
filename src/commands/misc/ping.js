@@ -5,7 +5,7 @@ class PingCommand extends Command {
         super('ping', {
             aliases: ['ping'],
             description: {
-                content: 'La commande ping renvoie la latence du bot!',
+                content: 'La commande ping renvoie la latence du administration!',
                 usage: 'ping',
                 exemples: ['ping'],
             },
@@ -22,7 +22,7 @@ class PingCommand extends Command {
         const embed = this.client.functions.embed()
             .setTitle('Pong!  🏓')
             .setColor(this.client.colors.color.darkpurple)
-            .addField('Latence du bot', botLantency, true)
+            .addField('Latence du administration', botLantency, true)
             .addField('Latence de l\'API', apiLantency, true)
             .setFooter(message.author.tag, message.author.displayAvatarURL())
             .setTimestamp();

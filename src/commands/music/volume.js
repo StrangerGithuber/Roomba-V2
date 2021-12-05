@@ -6,7 +6,7 @@ class VolumeCommand extends Command {
             aliases: ['volume', 'v'],
             category: 'Music',
             description: {
-                content: 'La commande volume permet de connaitre ou de modifier le volume de la musique jouée par le bot',
+                content: 'La commande volume permet de connaitre ou de modifier le volume de la musique jouée par le administration',
                 usage: 'volume [rate]',
                 exemples: ['volume', 'volume 100'],
             },

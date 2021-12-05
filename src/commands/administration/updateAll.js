@@ -6,11 +6,11 @@ class UpdateAllCommand extends Command {
         super('updateAll', {
             aliases: ['updateAll', 'uptall'],
             description: {
-                content: 'La commande permet de mettre à jour les différents model du bot en DB!',
+                content: 'La commande permet de mettre à jour les différents model du administration en DB!',
                 usage: 'updateAll',
                 exemples: ['updateAll', 'uptall'],
             },
-            category: 'Dev',
+            category: 'Administration',
             ownerOnly: true
         });
     }

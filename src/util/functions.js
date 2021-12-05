@@ -15,7 +15,7 @@ module.exports = {
         if (queue.data.voiceChannelID === message.member.voice.channel.id){
             bool = true;
         }else{
-            message.channel.send("Vous devez être dans le même channel vocal que le bot pour effectuer cette commande !")
+            message.channel.send("Vous devez être dans le même channel vocal que le administration pour effectuer cette commande !")
         }
         return bool;
     },
@@ -48,6 +48,15 @@ module.exports = {
             }
         }
         return channel;
+    },
+    clearLogs: async function(AkairoClient, forceMode = false){
+        if (forceMode){
+            await AkairoClient.log.base.deleteExpiredLogs(true);
+            await AkairoClient.log.music.deleteExpiredLogs(true);
+        }else{
+            await AkairoClient.log.base.deleteExpiredLogs();
+            await AkairoClient.log.music.deleteExpiredLogs();
+        }
     },
     createMusicChannel: async function (guild, GuildProvider, AkairoClient){
         const newMusicChannel = await guild.channels.create("Musique", {

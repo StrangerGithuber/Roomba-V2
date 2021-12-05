@@ -5,7 +5,7 @@ class SettingCommand extends Command {
     constructor() {
         super('setting', {
             aliases: ['setting'],
-            category: 'Misc',
+            category: 'Administration',
             description: {
                 content: 'La commande setting modifie le setting choisi du serveur',
                 usage: "setting <settingName> <newSetting>",

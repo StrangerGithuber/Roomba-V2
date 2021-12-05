@@ -6,7 +6,7 @@ class NowPlayingCommand extends Command {
             aliases: ['nowPlaying', 'now'],
             category: 'Music',
             description: {
-                content: 'La commande nowPlaying permet de connaitre la musique jouée par le bot',
+                content: 'La commande nowPlaying permet de connaitre la musique jouée par le administration',
                 usage: 'nowPlaying',
                 exemples: ['nowPlaying', 'now'],
             },

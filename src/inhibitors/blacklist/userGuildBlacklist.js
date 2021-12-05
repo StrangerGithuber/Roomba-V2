@@ -4,7 +4,7 @@ const {OWNER_ID} = require("../../util/config");
 class UserGuildBlacklistInhibitor extends Inhibitor {
     constructor() {
         super('userGuildBlacklist', {
-            reason: 'vous êtes blacklisté du bot sur ce serveur',
+            reason: 'vous êtes blacklisté du administration sur ce serveur',
             type: "post",
             priority: 2
         })
