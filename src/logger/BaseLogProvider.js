@@ -13,7 +13,7 @@ class BaseLogProvider {
 
     async init(){
         const createdCollection = await this.mongoModel.findOne({name : this.name});
-        if(createdCollection.length === 0){
+        if(createdCollection === null || createdCollection === undefined){
             await this.mongoModel.create({
                 name: this.name,
                 logs: [],
