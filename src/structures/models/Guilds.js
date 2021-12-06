@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const guildSchema = new mongoose.Schema({
     guildID: String,
     prefix: {
@@ -63,66 +62,7 @@ const guildSchema = new mongoose.Schema({
     },
 })
 
-const moderationSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        default: 1
-    },
-    blacklist: {
-        guilds: {
-            type: Array,
-            required: false,
-            default: []
-        },
-        users: {
-            type: Array,
-            required: false,
-            default: []
-        },
-    }
-})
-
-const baseLogSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    global: {
-        type: Array,
-        required: false,
-        default: []
-    },
-    command: {
-        type: Array,
-        required: false,
-        default: []
-    },
-    log: {
-        type: Array,
-        required: false,
-        default: []
-    },
-    info: {
-        type: Array,
-        required: false,
-        default: []
-    },
-    warn: {
-        type: Array,
-        required: false,
-        default: []
-    },
-    error: {
-        type: Array,
-        required: false,
-        default: []
-    }
-})
-
-
+var Guilds = mongoose.model('Guild', guildSchema);
 module.exports = {
-    Guild: mongoose.model('Guild', guildSchema),
-    Moderation: mongoose.model('Moderation', moderationSchema),
-    Log: mongoose.model('Logs', baseLogSchema)
+    Guild: Guilds,
 }
