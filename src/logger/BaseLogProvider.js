@@ -1,4 +1,4 @@
-const { Log } = require('../structures/Models');
+const { Log } = require('../structures/models/Logs');
 
 class BaseLogProvider {
     constructor(name = "Base Logger", mongoModel = Log) {
