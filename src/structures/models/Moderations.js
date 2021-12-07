@@ -19,7 +19,7 @@ const moderationSchema = new mongoose.Schema({
     }
 })
 
-var Moderations = mongoose.model('Moderation', moderationSchema);
+
 module.exports = {
-    Moderation: Moderations
+    Moderation: mongoose.model('Moderation', moderationSchema),
 }

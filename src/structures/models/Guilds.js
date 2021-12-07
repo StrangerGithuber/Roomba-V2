@@ -62,7 +62,7 @@ const guildSchema = new mongoose.Schema({
     },
 })
 
-var Guilds = mongoose.model('Guild', guildSchema);
+
 module.exports = {
-    Guild: Guilds,
+    Guild: mongoose.model('Guild', guildSchema),
 }

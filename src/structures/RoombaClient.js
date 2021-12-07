@@ -7,9 +7,6 @@ const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbe
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider } = require("./Providers/GuildProvider");
 const { ModerationProvider } = require("./Providers/ModerationProvider");
-const { Guild } = require("./models/Guilds");
-const { Moderation } = require("./models/Moderations");
-const { Log } = require("./models/Logs");
 const { BaseLogProvider, MusicLogProvider } = require("../logger/LogProviders");
 const { color } = require("../util/colors");
 const ts = new Date();
@@ -108,9 +105,7 @@ module.exports = class RoombaClient extends AkairoClient {
 
     async start() {
         console.clear();
-
         try{
-
             await mongoose.connect(MONGO_STRING, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,

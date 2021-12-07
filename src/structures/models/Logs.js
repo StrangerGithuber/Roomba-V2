@@ -38,8 +38,8 @@ const baseLogSchema = new mongoose.Schema({
     }
 })
 
-var Logs = mongoose.model('Logs', baseLogSchema);
+
 
 module.exports = {
-    Log: Logs
+    Log: mongoose.model('Logs', baseLogSchema),
 }
