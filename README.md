@@ -163,8 +163,6 @@ Stop `pm2` server
 ```
 ## Roadmap
 
-- Need to split mongoose models into differents files, with a controller
-
 - Add more commands
 
 - Add slash commands
@@ -179,6 +177,7 @@ Stop `pm2` server
 
 - Created a sub-class MusicPlayer that extend Player to make the events handled automaticaly on creation
 - Created Log Provider with extended class to generate custom log outputs inside console and inside database, sorted by type
+- Splitted mongoose models into differents files
 
 
 
