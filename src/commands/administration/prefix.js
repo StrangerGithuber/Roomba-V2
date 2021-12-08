@@ -13,7 +13,8 @@ class PrefixCommand extends Command {
             channel: "guild",
             args: [
                 {id: "newPrefix", type: 'string'}
-            ]
+            ],
+            userPermissions: ['ADMINISTRATOR'],
         });
     }
 

@@ -11,7 +11,7 @@ class GuildMemberRemoveListener extends Listener {
     async exec(member) {
         const guildDB = await this.client.guildSettings.get(member.guild);
         if(!member.user.bot) {
-            await this.client.log.base.info(guild.id, `Leaving member: ${member.user.tag} in ${member.guild.name}`);
+            await this.client.log.base.info(member.guild.id, `Leaving member: ${member.user.tag} in ${member.guild.name}`);
             if (guildDB.welcome.enabled) {
                 let welcomeChannel;
                 if (guildDB) {

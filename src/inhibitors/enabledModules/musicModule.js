@@ -10,11 +10,11 @@ class MusicModuleInhibitor extends Inhibitor {
     }
 
     async exec(message) {
-        let bool = true;
+        let bool = false;
         const musicCommands = [];
         const prefix = await this.client.guildSettings.getSetting(message.guild, 'prefix');
         const enabledModule = await this.client.guildSettings.getSettingRecursively(message.guild, 'music.enabled');
-        if (enabledModule) {
+        if (!enabledModule) {
             this.client.commandHandler.categories.forEach((val) => {
                 if (val.id === 'Music'){
                     val.forEach(r => {
@@ -25,7 +25,7 @@ class MusicModuleInhibitor extends Inhibitor {
                 }
             })
             if (musicCommands.includes(message.toString().replace(prefix, '').split(' ')[0])) {
-                bool = false;
+                bool = true;
             }
         }
         if (message.author.id === OWNER_ID) bool = false;

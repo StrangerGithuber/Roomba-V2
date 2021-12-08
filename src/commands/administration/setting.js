@@ -15,13 +15,15 @@ class SettingCommand extends Command {
             args: [
                 {id: "settingName", type: 'string'},
                 {id: "newSetting", type: 'string'}
-            ]
+            ],
+            userPermissions: ['ADMINISTRATOR'],
         });
     }
 
     async exec(message, { settingName, newSetting }) {
+        await message.delete();
         if (!settingName) return message.reply(`Veuillez préciser un setting du serveur à récuperer ou modifier: \`\`\`${await this.handler.prefix(message)}setting <settingName> <newValue>\`\`\``)
-        const guildToUpdate = await Guild.findOne({ id: message.guild.id });
+        const guildToUpdate = await Guild.findOne({ guildID: message.guild.id });
         if (!newSetting) return message.channel.send(`Paramètre ${settingName} actuel -> \`${this.client.functions.resolve(settingName, guildToUpdate)}\``);
         const oldSetting = this.client.functions.resolve(settingName, guildToUpdate);
         const split = settingName.split('.');
@@ -35,7 +37,6 @@ class SettingCommand extends Command {
         if (depth > 1){
             await this.client.guildSettings.updateRecursively(guildToUpdate, newSetting, split, depth);
         }
-        await message.delete();
         await this.client.log.base.logCommand(message.guildId, message.author, this.id, {settingName: settingName, oldSetting: oldSetting, newSetting : newSetting});
         return message.channel.send(`Le ${settingName} du serveur est maintenant -> \`${newSetting}\``);
     }
