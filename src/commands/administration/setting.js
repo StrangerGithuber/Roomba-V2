@@ -21,7 +21,7 @@ class SettingCommand extends Command {
 
     async exec(message, { settingName, newSetting }) {
         if (!settingName) return message.reply(`Veuillez préciser un setting du serveur à récuperer ou modifier: \`\`\`${await this.handler.prefix(message)}setting <settingName> <newValue>\`\`\``)
-        const guildToUpdate = await Guild.findOne({ id: message.guild.id });
+        const guildToUpdate = await Guild.findOne({ guildID: message.guild.id });
         if (!newSetting) return message.channel.send(`Paramètre ${settingName} actuel -> \`${this.client.functions.resolve(settingName, guildToUpdate)}\``);
         const oldSetting = this.client.functions.resolve(settingName, guildToUpdate);
         const split = settingName.split('.');
