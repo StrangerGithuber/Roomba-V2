@@ -4,12 +4,12 @@ const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = requ
 const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbed, checkUserInVoiceChannel, checkUserInSameVoiceChannelAsBot, getBotInformations, displayBotInfos, createNewMemberCard, createRemovedMemberCard, logToMusicChannel, logLoadedHandlers, createMusicChannel,
     resolve, leaveBlacklistedGuild, generateModels, clearLogs
 } = require("../util/functions");
-const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
 const { GuildsProvider } = require("./providers/GuildProvider");
 const { ModerationProvider } = require("./providers/ModerationProvider");
 const { BaseLogProvider, MusicLogProvider } = require("../logger/LogProviders");
 const { color } = require("../util/colors");
 const ts = new Date();
+const { Collection } = require("discord.js");
 
 module.exports = class RoombaClient extends AkairoClient {
     constructor(config = {}) {
@@ -44,7 +44,7 @@ module.exports = class RoombaClient extends AkairoClient {
         prefix: async message => {
             const guildPrefix = await this.guildSettings.get(message.guild);
             if (guildPrefix) return guildPrefix.prefix;
-            return config.prefix;
+            return process.env.PREFIX;
         },
         allowMention: true,
         defaultCooldown: 3000,
@@ -84,6 +84,7 @@ module.exports = class RoombaClient extends AkairoClient {
 
     // Discord Music Player client
     this.musicPlayer = new MusicPlayer(this.util.client, this.guildSettings, this);
+    this.slashCommand = new Collection();
 
     //Theme
     // TODO need to add theme to the administration that can be changed via config file
@@ -106,7 +107,7 @@ module.exports = class RoombaClient extends AkairoClient {
     async start() {
         console.clear();
         try{
-            await mongoose.connect(MONGO_STRING, {
+            await mongoose.connect(process.env.MONGO_STRING, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 minPoolSize : 10,
@@ -122,6 +123,6 @@ module.exports = class RoombaClient extends AkairoClient {
         setInterval(async () => {
             await this.functions.clearLogs(this, false);
         }, 1800000);
-        return this.login(CLIENT_TOKEN)
+        return this.login(process.env.CLIENT_TOKEN)
     }
 }

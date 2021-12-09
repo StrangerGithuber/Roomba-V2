@@ -5,7 +5,7 @@ const guildSchema = new mongoose.Schema({
     prefix: {
         type: String,
         required: false,
-        default : '!'
+        default : process.env.PREFIX
     },
     blacklist: {
         channels: {

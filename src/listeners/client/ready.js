@@ -1,4 +1,8 @@
 const { Listener } = require('discord-akairo');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+const fs = require('fs');
+const path = require('path');
 const ts = new Date();
 
 class ReadyListener extends Listener {
@@ -16,6 +20,37 @@ class ReadyListener extends Listener {
         console.log(` ${ts.toLocaleString()} - Roomba V2 Started`);
         console.log("════════════════════════════════════════════");
         await this.client.log.base.global(`Roomba V2 Started`);
+        
+        const commands = [];
+        const pathsslash = path.resolve(__dirname, '..', '..', 'slash_commands');
+        fs.readdirSync(pathsslash).forEach(dir => {
+            let pathsubsslash = path.resolve(__dirname, '..', '..', 'slash_commands', dir);
+            const commandFiles = fs.readdirSync(pathsubsslash).filter(file => file.endsWith(".js"));
+    
+            for (let file of commandFiles) {
+                let pathfilesslash = path.normalize(pathsubsslash + '/') + file;
+                let command = require(pathfilesslash);
+                this.client.slashCommand.set(command.data.name, command);
+                commands.push(command.data.toJSON());
+            }
+        });
+
+        const rest = new REST({ version: '9' }).setToken(process.env.CLIENT_TOKEN);
+
+        (async () => {
+            try {
+                await rest.put(
+                    Routes.applicationCommands(process.env.CLIENT_ID),
+                    { body: commands },
+                );
+
+                await this.client.log.base.global(`Successfully reloaded application (/) commands.`);
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+
+        
     }
 }
 
