@@ -5,8 +5,8 @@ const { embed, musicEmbed,fetchChannel, checkMusicChannelExistence, playlistEmbe
     resolve, leaveBlacklistedGuild, generateModels, clearLogs
 } = require("../util/functions");
 const { CLIENT_TOKEN, MONGO_STRING } = require('../util/config');
-const { GuildsProvider } = require("./Providers/GuildProvider");
-const { ModerationProvider } = require("./Providers/ModerationProvider");
+const { GuildsProvider } = require("./providers/GuildProvider");
+const { ModerationProvider } = require("./providers/ModerationProvider");
 const { BaseLogProvider, MusicLogProvider } = require("../logger/LogProviders");
 const { color } = require("../util/colors");
 const ts = new Date();

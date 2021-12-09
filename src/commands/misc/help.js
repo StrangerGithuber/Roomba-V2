@@ -15,7 +15,6 @@ class HelpCommand extends Command {
 
     async exec(message, { command }) {
         const prefix = await this.handler.prefix(message);
-        console.log(command);
         if (!command) {
             let embed = this.client.functions.embed()
                 .setAuthor(
