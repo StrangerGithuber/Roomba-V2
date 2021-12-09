@@ -103,7 +103,8 @@ You need to rename the `.env.example` to `.env` and fill in the information. Ope
 `CLIENT_ID` can be found in the discord developper section : [Here](https://discord.com/developers/applications/)   
 `MONGO_STRING` can be found when you create your mongoDB cluster : [Here](https://cloud.mongodb.com/)  
 `OWNER_ID` can be found when right clicking on your account on discord with developer settings activated  
-`PREFIX` you can give a default prefix which will be added into database
+`PREFIX` you can give a default prefix which will be added into database  
+`GUILDSLASH` you can give a guild/server ID which allows you to test or limit to specific guild/server the slash commands. If you delete the value then the slash commands will be added globally (it can take between 1-2 hours to see the changes if slash commands are used globally)
 
 
 ## Run Locally

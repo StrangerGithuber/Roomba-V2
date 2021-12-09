@@ -39,10 +39,18 @@ class ReadyListener extends Listener {
 
         (async () => {
             try {
-                await rest.put(
-                    Routes.applicationCommands(process.env.CLIENT_ID),
-                    { body: commands },
-                );
+                if(process.env.GUILDSLASH){
+                    await rest.put(
+                        Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILDSLASH),
+                        { body: commands },
+                    );
+                }
+                else {
+                    await rest.put(
+                        Routes.applicationCommands(process.env.CLIENT_ID),
+                        { body: commands },
+                    );
+                }
 
                 await this.client.log.base.global(`Successfully reloaded application (/) commands.`);
             } catch (error) {
