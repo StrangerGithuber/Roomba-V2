@@ -59,7 +59,7 @@ const guildSchema = new mongoose.Schema({
             required: false,
             default: null
         },
-    },
+    }
 })
 
 

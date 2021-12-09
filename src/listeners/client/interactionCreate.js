@@ -11,7 +11,7 @@ class InteractionCreateListener extends Listener {
     async exec(interaction) {
 
         if (!interaction.isCommand()) return;
-        const command = this.client.slashCommand.get(interaction.commandName);
+        const command = this.client.slashCommandProvider.commands.get(interaction.commandName);
         if (!command) return;
         try {
             await command.execute(interaction, this.client);
