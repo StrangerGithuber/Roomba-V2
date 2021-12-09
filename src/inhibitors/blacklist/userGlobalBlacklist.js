@@ -1,5 +1,4 @@
 const { Inhibitor } = require('discord-akairo');
-const {OWNER_ID} = require("../../util/config");
 
 class UserGlobalBlacklistInhibitor extends Inhibitor {
     constructor() {
@@ -16,7 +15,7 @@ class UserGlobalBlacklistInhibitor extends Inhibitor {
             await this.client.moderation.create();
             blacklist = await this.client.moderation.getSettingRecursively("blacklist.users");
         }
-        if (message.author.id === OWNER_ID) return false;
+        if (message.author.id === process.env.OWNER_ID) return false;
         return blacklist.includes(message.author.id);
     }
 

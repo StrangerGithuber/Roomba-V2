@@ -1,5 +1,5 @@
 const { Inhibitor } = require('discord-akairo');
-const { OWNER_ID } = require('../../util/config');
+
 class MusicModuleInhibitor extends Inhibitor {
     constructor() {
         super('musicModule', {
@@ -28,7 +28,7 @@ class MusicModuleInhibitor extends Inhibitor {
                 bool = true;
             }
         }
-        if (message.author.id === OWNER_ID) bool = false;
+        if (message.author.id === process.env.OWNER_ID) bool = false;
         return bool;
     }
 }
