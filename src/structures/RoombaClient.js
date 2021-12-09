@@ -10,6 +10,7 @@ const { ModerationProvider } = require("./providers/ModerationProvider");
 const { BaseLogProvider, MusicLogProvider } = require("../logger/LogProviders");
 const { color } = require("../util/colors");
 const ts = new Date();
+const { Collection } = require("discord.js");
 
 module.exports = class RoombaClient extends AkairoClient {
     constructor(config = {}) {
@@ -84,6 +85,7 @@ module.exports = class RoombaClient extends AkairoClient {
 
     // Discord Music Player client
     this.musicPlayer = new MusicPlayer(this.util.client, this.guildSettings, this);
+    this.slashCommand = new Collection();
 
     //Theme
     // TODO need to add theme to the administration that can be changed via config file
