@@ -5,7 +5,7 @@ class MusicLogProvider extends BaseLogProvider {
         super("Music Logger");
     }
     async event(guildID, event, data) {
-        await this.collection.info.push({
+        const object = {
             guildID: guildID,
             event: {
                 name: event,
@@ -13,22 +13,18 @@ class MusicLogProvider extends BaseLogProvider {
             },
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
-        });
-        setTimeout(async () => {
-            this.collection = await this.collection.save();
-        },5000)
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {info: object}});
     }
 
     async error(guildID, error) {
-        await this.collection.error.push({
+        const object = {
             guildID: guildID,
             error: error,
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 12))
-        });
-        setTimeout(async () => {
-            this.collection = await this.collection.save();
-        },5000)
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {error: object}});
     }s
 }
 

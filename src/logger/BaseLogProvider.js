@@ -4,11 +4,7 @@ class BaseLogProvider {
     constructor(name = "Base Logger", mongoModel = Log) {
         this.name = name;
         this.mongoModel = mongoModel;
-        this.init().then(() => {
-            this.#getCollection().then(collection => {
-                this.collection = collection;
-            });
-        });
+        this.init();
     }
 
     async init(){
@@ -24,26 +20,20 @@ class BaseLogProvider {
         }
     }
 
-    async #getCollection(){
-        return this.mongoModel.findOne({name: this.name}).then(collection => {
-            return collection;
-        });
-    }
-
     async global(message) {
         const consoleMessage = `[GLOBAL][${this.name}]: ${message}`;
         const databaseMessage = `${message}`;
-        this.collection.global.push({
+        const object = {
             message: databaseMessage,
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 31))
-        });
-        this.collection = await this.collection.save();
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {global: object}});
         console.log(consoleMessage);
     }
 
     async logCommand(guildID, author, command, data = null) {
-        this.collection.command.push({
+        const object = {
             guildID: guildID,
             user: {
                 userID: author.id,
@@ -55,94 +45,96 @@ class BaseLogProvider {
             },
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
-        });
-        this.collection = await this.collection.save();
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {command: object}});
     }
 
     async log(guildID, message) {
         const consoleMessage = `[LOG][${this.name}]: ${message} (${guildID})`;
         const databaseMessage = `${message}`;
-        this.collection.log.push({
+        const object = {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
-        });
-        this.collection = await this.collection.save();
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {log: object}});
         console.log(consoleMessage);
     }
 
     async info(guildID, message) {
         const consoleMessage = `[INFO][${this.name}]: ${message} (${guildID})`;
         const databaseMessage = `${message}`;
-        await this.collection.info.push({
+        const object = {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 30))
-        });
-        this.collection = await this.collection.save();
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {info: object}});
         console.log(consoleMessage);
     }
 
     async warn(guildID, message) {
         const consoleMessage = `[WARN][${this.name}]: ${message} (${guildID})`;
         const databaseMessage = `${message}`;
-        await this.collection.warn.push({
+        const object = {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 2))
-        });
-        this.collection = await this.collection.save();
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {warn: object}});
         console.log(consoleMessage);
     }
 
     async error(guildID, message) {
         const consoleMessage = `[ERROR][${this.name}]: ${message} (${guildID})`;
         const databaseMessage = `${message}`;
-        await this.collection.error.push({
+        const object = {
             guildID: guildID,
             message: databaseMessage,
             date: new Date(),
             expirationDate: new Date(new Date().getTime() + (1000 * 60 * 60 * 4))
-        });
-        this.collection = await this.collection.save();
+        };
+        await this.mongoModel.findOneAndUpdate({name: this.name}, {$push: {error: object}});
         console.log(consoleMessage);
     }
 
     async getLogs(guildID = null, type = null) {
+        const collection = await this.mongoModel.findOne({name: this.name});
         if (guildID === null){
             return {
-                global: this.collection.global.reverse(),
-                command: this.collection.command.reverse(),
-                logs: this.collection.log.reverse(),
-                info: this.collection.info.reverse(),
-                warning: this.collection.warn.reverse(),
-                error: this.collection.error.reverse()
+                global: collection.global.reverse(),
+                command: collection.command.reverse(),
+                logs: collection.log.reverse(),
+                info: collection.info.reverse(),
+                warning: collection.warn.reverse(),
+                error: collection.error.reverse()
             };
         }
         if (type === null) {
             return {
-                command : this.collection["command"].filter(log => log.guildID === guildID).reverse(),
-                log: this.collection["log"].filter(log => log.guildID === guildID).reverse(),
-                info: this.collection["info"].filter(log => log.guildID === guildID).reverse(),
-                warn: this.collection["warn"].filter(log => log.guildID === guildID).reverse(),
-                error: this.collection["error"].filter(log => log.guildID === guildID).reverse()
+                command : collection["command"].filter(log => log.guildID === guildID).reverse(),
+                log: collection["log"].filter(log => log.guildID === guildID).reverse(),
+                info: collection["info"].filter(log => log.guildID === guildID).reverse(),
+                warn: collection["warn"].filter(log => log.guildID === guildID).reverse(),
+                error: collection["error"].filter(log => log.guildID === guildID).reverse()
             };
         }
-        return this.collection[type].filter(log => log.guildID === guildID).reverse();
+        return collection[type].filter(log => log.guildID === guildID).reverse();
     }
 
     async deleteExpiredLogs(forceMod = false) {
+        const collection = await this.mongoModel.findOne({name: this.name});
         await this.global(`Deleted expired logs ${forceMod ? "- [FORCE MOD]" : ""}`);
         const types = ["global", "log", "info", "warn", "error", "command"];
         if (!forceMod){
-            types.forEach(type => {this.collection[type] = this.collection[type].filter(log => log.expirationDate > new Date())});
+            types.forEach(type => {collection[type] = collection[type].filter(log => log.expirationDate > new Date())});
         }else{
-            types.forEach(type => {this.collection[type] = []});
+            types.forEach(type => {collection[type] = []});
         }
-        this.collection = await this.collection.save();
+        await collection.save();
     }
 }
 
