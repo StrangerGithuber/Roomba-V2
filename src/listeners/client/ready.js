@@ -22,14 +22,14 @@ class ReadyListener extends Listener {
         await this.client.log.base.global(`Roomba V2 Started`);
         
         const commands = [];
-        const pathsplash = path.resolve(__dirname, '..', '..', 'slash_commands');
-        fs.readdirSync(pathsplash).forEach(dir => {
-            let pathsubsplash = path.resolve(__dirname, '..', '..', 'slash_commands', dir);
-            const commandFiles = fs.readdirSync(pathsubsplash).filter(file => file.endsWith(".js"));
+        const pathsslash = path.resolve(__dirname, '..', '..', 'slash_commands');
+        fs.readdirSync(pathsslash).forEach(dir => {
+            let pathsubsslash = path.resolve(__dirname, '..', '..', 'slash_commands', dir);
+            const commandFiles = fs.readdirSync(pathsubsslash).filter(file => file.endsWith(".js"));
     
             for (let file of commandFiles) {
-                let pathfilesplash = path.normalize(pathsubsplash + '/') + file;
-                let command = require(pathfilesplash);
+                let pathfilesslash = path.normalize(pathsubsslash + '/') + file;
+                let command = require(pathfilesslash);
                 this.client.slashCommand.set(command.data.name, command);
                 commands.push(command.data.toJSON());
             }
@@ -49,6 +49,7 @@ class ReadyListener extends Listener {
                 console.error(error);
             }
         })();
+
         
     }
 }
