@@ -99,11 +99,11 @@ client
 
 You need to rename the `.env.example` to `.env` and fill in the information. Open the *.env* file with a text editor and ou can give the information without string if there is no space between the data otherwise you can put in string, such as `"Something"`.
 
-`CLIENT_TOKEN` can be found in the discord developper section : [Here](https://discord.com/developers/applications/)  
-`CLIENT_ID` can be found in the discord developper section : [Here](https://discord.com/developers/applications/)
-`MONGO_STRING` can be found when you create your mongoDB cluster : [Here](https://cloud.mongodb.com/)
-`OWNER_ID` can be found when right clicking on your account on discord with developer settings activated
-`OWNER_ID` you can give a default prefix which will be added into database
+`CLIENT_TOKEN` can be found in the discord developper section : [Here](https://discord.com/developers/applications/)   
+`CLIENT_ID` can be found in the discord developper section : [Here](https://discord.com/developers/applications/)   
+`MONGO_STRING` can be found when you create your mongoDB cluster : [Here](https://cloud.mongodb.com/)  
+`OWNER_ID` can be found when right clicking on your account on discord with developer settings activated  
+`PREFIX` you can give a default prefix which will be added into database
 
 
 ## Run Locally
