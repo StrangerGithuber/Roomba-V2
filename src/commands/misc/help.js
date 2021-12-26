@@ -17,10 +17,7 @@ class HelpCommand extends Command {
         const prefix = await this.handler.prefix(message);
         if (!command) {
             let embed = this.client.functions.embed()
-                .setAuthor(
-                    `Bonjour, mon nom est ${this.client.user.username}!`,
-                    this.client.user.displayAvatarURL()
-                )
+                .setAuthor({ name: `Bonjour, mon nom est ${this.client.user.username}!`, iconURL: this.client.user.displayAvatarURL()})
                 .setColor(this.client.colors.color.darkpurple)
                 .setDescription(`Retrouvez la liste de toutes nos commandes ci-dessous!
                  Si vous avez besoin d'assistance rejoignez [notre serveur](https://placeholder.com)
