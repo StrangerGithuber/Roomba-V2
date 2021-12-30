@@ -1,8 +1,4 @@
 const { Listener } = require('discord-akairo');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const fs = require('fs');
-const path = require('path');
 const ts = new Date();
 
 class ReadyListener extends Listener {
@@ -57,8 +53,6 @@ class ReadyListener extends Listener {
                 console.error(error);
             }
         })();
-
-        
     }
 }
 
