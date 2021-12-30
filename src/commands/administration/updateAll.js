@@ -1,5 +1,5 @@
 const { Command } = require('discord-akairo');
-
+const { Guild } = require('../../structures/models/Guilds')
 
 class UpdateAllCommand extends Command {
     constructor() {
@@ -17,8 +17,10 @@ class UpdateAllCommand extends Command {
 
     async exec(message) {
         await Guild.updateMany({}, { log: { enabled: true, channel: null }, music: { enabled: true, channel: null }  }, { upsert: true }).then(
-            c => console.log(`Found Servers: ${c.matchedCount} and Updated: ${c.modifiedCount}`)
-        );
+            (c) => {
+                console.log(`Found Servers: ${c.matchedCount} and Updated: ${c.modifiedCount}`);
+                message.util.reply(`Found Servers: ${c.matchedCount} and Updated: ${c.modifiedCount}`);
+            });
     }
 }
 module.exports = UpdateAllCommand;
